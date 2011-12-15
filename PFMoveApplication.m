@@ -285,13 +285,27 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 		NSString *userApplicationsDir = [userApplicationsDirs objectAtIndex:0];
 		BOOL isDirectory;
 
-		if ([fm fileExistsAtPath:userApplicationsDir isDirectory:&isDirectory] && isDirectory) {
-			if (isUserDirectory) *isUserDirectory = YES;
-			return [userApplicationsDir stringByResolvingSymlinksAndAliases];
+        if ([fm fileExistsAtPath:userApplicationsDir isDirectory:&isDirectory] && isDirectory) {            
+            // User Applications directory exists. Get the directory contents.
+            NSError *error=nil;
+            NSArray *contents=[fm contentsOfDirectoryAtPath:userApplicationsDir error:&error];
+            
+            // Check if there is at least one ".app" inside the directory.
+            BOOL containsApp=NO;
+            for (NSString *contentsPath in contents) {
+                if ([[contentsPath pathExtension] isEqualToString:@"app"]) {
+                    containsApp=YES;
+                    break;
+                }
+            }
+            if (containsApp) {
+                if (isUserDirectory) *isUserDirectory = YES;
+                return [userApplicationsDir stringByResolvingSymlinksAndAliases];
+            }
 		}
 	}
 
-	// No user Applications directory. Return the machine local Applications directory
+	// No user Applications directory in use. Return the machine local Applications directory
 	if (isUserDirectory) *isUserDirectory = NO;
 	return [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByResolvingSymlinksAndAliases];
 }
