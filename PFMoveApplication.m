@@ -1,19 +1,10 @@
 //
-//  PFMoveApplication.m, version 1.6.3
+//  PFMoveApplication.m, version 1.7
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
 //
 //  The contents of this file are dedicated to the public domain.
-//
-//  Contributors:
-//	  Andy Kim
-//    John Brayton
-//    Chad Sellers
-//    Kevin LaCoste
-//    Rasmus Andersson / Spotify
-//    Timothy J. Wood
-//
 
 #import "PFMoveApplication.h"
 #import "NSString+SymlinksAndAliases.h"
@@ -285,23 +276,17 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 		NSString *userApplicationsDir = [userApplicationsDirs objectAtIndex:0];
 		BOOL isDirectory;
 
-        if ([fm fileExistsAtPath:userApplicationsDir isDirectory:&isDirectory] && isDirectory) {            
-            // User Applications directory exists. Get the directory contents.
-            NSError *error=nil;
-            NSArray *contents=[fm contentsOfDirectoryAtPath:userApplicationsDir error:&error];
-            
-            // Check if there is at least one ".app" inside the directory.
-            BOOL containsApp=NO;
-            for (NSString *contentsPath in contents) {
-                if ([[contentsPath pathExtension] isEqualToString:@"app"]) {
-                    containsApp=YES;
-                    break;
-                }
-            }
-            if (containsApp) {
-                if (isUserDirectory) *isUserDirectory = YES;
-                return [userApplicationsDir stringByResolvingSymlinksAndAliases];
-            }
+		if ([fm fileExistsAtPath:userApplicationsDir isDirectory:&isDirectory] && isDirectory) {
+			// User Applications directory exists. Get the directory contents.
+			NSArray *contents = [fm contentsOfDirectoryAtPath:userApplicationsDir error:NULL];
+
+			// Check if there is at least one ".app" inside the directory.
+			for (NSString *contentsPath in contents) {
+				if ([[contentsPath pathExtension] isEqualToString:@"app"]) {
+					if (isUserDirectory) *isUserDirectory = YES;
+					return [userApplicationsDir stringByResolvingSymlinksAndAliases];
+				}
+			}
 		}
 	}
 

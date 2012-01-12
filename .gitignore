@@ -6,3 +6,4 @@ build
 *.mode*
 *.pbxuser
 xcuserdata/
+project.xcworkspace/

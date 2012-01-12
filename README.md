@@ -7,6 +7,9 @@ A sample project that demonstrates how to move a running Mac OS X application to
 Version History
 ---------------
 
+* 1.7
+	- Only move to ~/Appilcations directory if an app is already in there.
+
 * 1.6.3
 	- Function calls deprecated in 10.7 no longer cause compile time warnings.
 	- Added Simplified Chinese and European Portuguese localizations
@@ -66,6 +69,7 @@ Code Contributors:
 * Timothy J. Wood
 * Matt Gallagher
 * Whitney Young
+* Nick Moore
 
 Translators:
 ------------
