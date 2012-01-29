@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.m, version 1.7
+//  PFMoveApplication.m, version 1.7.1
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
@@ -45,10 +45,11 @@ static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
+static BOOL IsLaunchedFromDMG();
 static BOOL Trash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath);
-
+static void Relaunch();
 
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary() {
@@ -63,16 +64,8 @@ void PFMoveToApplicationsFolderIfNecessary() {
 
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
-	BOOL bundlePathIsWritable = [fm isWritableFileAtPath:bundlePath];
 
-	// Guess if we have launched from a disk image
-	BOOL isLaunchedFromDMG = ([bundlePath hasPrefix:@"/Volumes/"] && !bundlePathIsWritable);
-
-	// Fail silently if there's no access to delete the original application
-	if (!isLaunchedFromDMG && !bundlePathIsWritable) {
-		NSLog(@"INFO -- No access to delete the app. Not offering to move it.");
-		return;
-	}
+	BOOL isLaunchedFromDMG = IsLaunchedFromDMG();
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -201,38 +194,7 @@ void PFMoveToApplicationsFolderIfNecessary() {
 		}
 
 		// Relaunch.
-		// The shell script waits until the original app process terminates.
-		// This is done so that the relaunched app opens as the front-most app.
-		int pid = [[NSProcessInfo processInfo] processIdentifier];
-
-		// Command run just before running open /final/path
-		NSString *preOpenCmd = @"";
-
-		// OS X >=10.5:
-		// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
-		// duplicate "scary file from the internet" dialog.
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-			// Add the -r flag on 10.6
-			preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine '%@';", destinationPath];
-		}
-		else if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-			preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine '%@';", destinationPath];
-		}
-#endif
-
-		NSString *script = [NSString stringWithFormat:@"(while [ `ps -p %d | wc -l` -gt 1 ]; do sleep 0.1; done; %@ open '%@') &", pid, preOpenCmd, destinationPath];
-
-		[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-
-		// Launched from within a DMG? -- unmount (if no files are open after 5 seconds,
-		// otherwise leave it mounted).
-		if (isLaunchedFromDMG) {
-			script = [NSString stringWithFormat:@"(sleep 5 && hdiutil detach '%@') &", [bundlePath stringByDeletingLastPathComponent]];
-			[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-		}
-
-		exit(0);
+		Relaunch(destinationPath);
 	}
 	else {
 		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
@@ -328,6 +290,15 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 #endif
 	// 10.4
 	return [[[path stringByDeletingLastPathComponent] lastPathComponent] isEqualToString:@"Downloads"];
+}
+
+static BOOL IsLaunchedFromDMG() {
+	// Guess if we have launched from a disk image
+	NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+	NSFileManager *fm = [NSFileManager defaultManager];
+	BOOL bundlePathIsWritable = [fm isWritableFileAtPath:bundlePath];
+
+	return [bundlePath hasPrefix:@"/Volumes/"] && !bundlePathIsWritable;
 }
 
 static BOOL Trash(NSString *path) {
@@ -442,4 +413,39 @@ static BOOL CopyBundle(NSString *srcPath, NSString *dstPath) {
 	}
 #endif
 	return NO;
+}
+
+static void Relaunch(NSString *destinationPath) {
+	// The shell script waits until the original app process terminates.
+	// This is done so that the relaunched app opens as the front-most app.
+	int pid = [[NSProcessInfo processInfo] processIdentifier];
+
+	// Command run just before running open /final/path
+	NSString *preOpenCmd = @"";
+
+	// OS X >=10.5:
+	// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
+	// duplicate "scary file from the internet" dialog.
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		// Add the -r flag on 10.6
+		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine '%@';", destinationPath];
+	}
+	else if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
+		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine '%@';", destinationPath];
+	}
+#endif
+
+	NSString *script = [NSString stringWithFormat:@"(while [ `ps -p %d | wc -l` -gt 1 ]; do sleep 0.1; done; %@ open '%@') &", pid, preOpenCmd, destinationPath];
+
+	[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
+
+	// Launched from within a DMG? -- unmount (if no files are open after 5 seconds,
+	// otherwise leave it mounted).
+	if (IsLaunchedFromDMG()) {
+		script = [NSString stringWithFormat:@"(sleep 5 && hdiutil detach '%@') &", [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent]];
+		[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
+	}
+
+	exit(0);
 }

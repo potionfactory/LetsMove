@@ -7,6 +7,9 @@ A sample project that demonstrates how to move a running Mac OS X application to
 Version History
 ---------------
 
+* 1.7.1
+	- Refactoring
+
 * 1.7
 	- Only move to ~/Appilcations directory if an app is already in there.
 
