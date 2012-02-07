@@ -160,7 +160,7 @@ void PFMoveToApplicationsFolderIfNecessary() {
 				else {
 					for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
 						NSString *executablePath = [[runningApplication executableURL] path];
-						if ([[executablePath substringToIndex:[destinationPath length]] isEqualToString:destinationPath]) {
+						if ([executablePath hasPrefix:destinationPath]) {
 							destinationIsRunning = YES;
 							break;
 						}
