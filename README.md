@@ -7,6 +7,9 @@ A sample project that demonstrates how to move a running Mac OS X application to
 Version History
 ---------------
 
+* 1.7.2
+	- Fixed an exception that could happen.
+
 * 1.7.1
 	- Refactoring
 
