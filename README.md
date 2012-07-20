@@ -89,4 +89,4 @@ Translators:
 * Marco Improda (Italian)
 * Venj Chu (Simplified Chinese)
 * Sérgio Miranda (European Portuguese)
-
+* Victor Figueiredo (Brazilian Portuguese)
