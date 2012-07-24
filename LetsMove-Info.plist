@@ -28,5 +28,7 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>PFDesiredAppBundleName</key>
+	<string>MyCoolApp.app</string>
 </dict>
 </plist>

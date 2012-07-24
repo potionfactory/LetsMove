@@ -39,6 +39,7 @@
 
 
 static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
+static NSString *DesiredAppBundleNameKey = @"PFDesiredAppBundleName";
 
 
 // Helper functions
@@ -70,7 +71,13 @@ void PFMoveToApplicationsFolderIfNecessary() {
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
 	NSString *applicationsDirectory = PreferredInstallLocation(&installToUserApplications);
-	NSString *bundleName = [bundlePath lastPathComponent];
+    
+    // Attemp to get the desired application bundle name from the info plist
+    NSString *bundleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:DesiredAppBundleNameKey];
+    if (!bundleName) {
+        // No bundle name in the Info.plist so fall back to getting the last component of the bundle's path
+        bundleName = [bundlePath lastPathComponent];
+    }
 	NSString *destinationPath = [applicationsDirectory stringByAppendingPathComponent:bundleName];
 
 	// Check if we need admin password to write to the Applications directory
