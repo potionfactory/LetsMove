@@ -16,8 +16,6 @@
 		A10D5AD3106C082200E53420 /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A10D5AD1106C082200E53420 /* MoveApplication.strings */; };
 		A120E7F810630B160045BE3F /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A120E7F710630B160045BE3F /* PFMoveApplication.m */; };
 		A12AF6B1136E7D0100F0BC7D /* NSString+SymlinksAndAliases.m in Sources */ = {isa = PBXBuildFile; fileRef = A12AF6B0136E7D0100F0BC7D /* NSString+SymlinksAndAliases.m */; };
-		A1C2C5DF15B9E9160075D09D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		A1C2C5E115B9E9710075D09D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -176,7 +174,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LetsMove" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -214,8 +212,6 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				A10D5AD3106C082200E53420 /* MoveApplication.strings in Resources */,
-				A1C2C5DF15B9E9160075D09D /* MainMenu.xib in Resources */,
-				A1C2C5E115B9E9710075D09D /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
@@ -295,6 +292,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
