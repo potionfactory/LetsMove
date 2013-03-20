@@ -3,6 +3,24 @@ LetsMove
 
 A sample project that demonstrates how to move a running Mac OS X application to the Applications folder.
 
+Usage
+-----
+
+Copy the following files into your project:
+
+- PFMoveApplication.h
+- PFMoveApplication.m
+- NSString+SymlinksAndAliases.h
+- NSString+SymlinksAndAliases.m
+
+In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
+
+
+License
+-------
+Public domain
+
+
 
 Version History
 ---------------
