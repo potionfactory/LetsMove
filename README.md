@@ -7,7 +7,8 @@ A sample project that demonstrates how to move a running Mac OS X application to
 Version History
 ---------------
 
-* 1.7.3
+* 1.8
+	- If the app is already there in the Applications folder but not writable, request authentication from user
 	- Added Korean localization
 
 * 1.7.2

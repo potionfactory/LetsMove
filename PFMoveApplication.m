@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.m, version 1.7.3
+//  PFMoveApplication.m, version 1.8
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
@@ -75,6 +75,9 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 	// Check if we need admin password to write to the Applications directory
 	BOOL needAuthorization = ([fm isWritableFileAtPath:applicationsDirectory] == NO);
+
+	// Check if the destination bundle is already there but not writable
+	needAuthorization |= ([fm fileExistsAtPath:destinationPath] && ![fm isWritableFileAtPath:destinationPath]);
 
 	// Setup the alert
 	NSAlert *alert = [[[NSAlert alloc] init] autorelease];
