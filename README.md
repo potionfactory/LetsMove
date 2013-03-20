@@ -7,6 +7,9 @@ A sample project that demonstrates how to move a running Mac OS X application to
 Version History
 ---------------
 
+* 1.7.3
+	- Added Korean localization
+
 * 1.7.2
 	- Fixed an exception that could happen.
 
@@ -90,3 +93,4 @@ Translators:
 * Venj Chu (Simplified Chinese)
 * Sérgio Miranda (European Portuguese)
 * Victor Figueiredo (Brazilian Portuguese)
+* AppLingua (Korean)
