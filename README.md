@@ -113,3 +113,4 @@ Translators:
 * Sérgio Miranda (European Portuguese)
 * Victor Figueiredo (Brazilian Portuguese)
 * AppLingua (Korean)
+* Czech X Team (Czech)
