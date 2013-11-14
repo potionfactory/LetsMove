@@ -25,6 +25,13 @@ Public domain
 Version History
 ---------------
 
+* 1.9
+	- Removed OS X 10.4 support
+	- Properly detect if the running app is in a disk image
+	- Fixed a bug where if the app's name contained a quote, the app could not be moved
+	- After a successful move, delete the application instead of moving it to the Trash.
+	- Other fixes and improvements
+
 * 1.8
 	- If the app is already there in the Applications folder but not writable, request authentication from user
 	- Added Korean localization
@@ -98,6 +105,7 @@ Code Contributors:
 * Matt Gallagher
 * Whitney Young
 * Nick Moore
+* Nicholas Riley
 
 Translators:
 ------------
