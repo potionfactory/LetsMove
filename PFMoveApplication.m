@@ -446,7 +446,7 @@ static void Relaunch(NSString *destinationPath) {
 	}
 #endif
 
-	NSString *script = [NSString stringWithFormat:@"(while [ `/bin/ps -p %d | /usr/bin/wc -l` -gt 1 ]; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
+	NSString *script = [NSString stringWithFormat:@"(while /bin/kill -0 %d >&/dev/null; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
 	[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 
