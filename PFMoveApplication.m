@@ -26,10 +26,6 @@
 #define kStrMoveApplicationQuestionInfoWillRequirePasswd _I10NS(@"Note that this will require an administrator password.")
 #define kStrMoveApplicationQuestionInfoInDownloadsFolder _I10NS(@"This will keep your Downloads folder uncluttered.")
 
-// Needs to be defined for compiling under 10.4 SDK
-#ifndef NSAppKitVersionNumber10_4
-	#define NSAppKitVersionNumber10_4 824
-#endif
 // Needs to be defined for compiling under 10.5 SDK
 #ifndef NSAppKitVersionNumber10_5
 	#define NSAppKitVersionNumber10_5 949
@@ -48,6 +44,7 @@ static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
+static BOOL IsApplicationAtPathRunning(NSString *path);
 static NSString *ContainingDiskImageDevice(void);
 static BOOL Trash(NSString *path);
 static BOOL DeleteOrTrash(NSString *path);
@@ -113,17 +110,13 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		NSButton *cancelButton = [alert addButtonWithTitle:kStrMoveApplicationButtonDoNotMove];
 		[cancelButton setKeyEquivalent:@"\e"];
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-			// Setup suppression button
-			[alert setShowsSuppressionButton:YES];
+		// Setup suppression button
+		[alert setShowsSuppressionButton:YES];
 
-			if (PFUseSmallAlertSuppressCheckbox) {
-				[[[alert suppressionButton] cell] setControlSize:NSSmallControlSize];
-				[[[alert suppressionButton] cell] setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
-			}
+		if (PFUseSmallAlertSuppressCheckbox) {
+			[[[alert suppressionButton] cell] setControlSize:NSSmallControlSize];
+			[[[alert suppressionButton] cell] setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
 		}
-#endif
 	}
 
 	// Activate app -- work-around for focus issues related to "scary file from internet" OS dialog.
@@ -153,30 +146,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 			// If a copy already exists in the Applications folder, put it in the Trash
 			if ([fm fileExistsAtPath:destinationPath]) {
 				// But first, make sure that it's not running
-				BOOL destinationIsRunning = NO;
-
-				// Use the new API on 10.6 or higher to determine if the app is already running
-				if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
-					for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
-						NSString *executablePath = [[runningApplication executableURL] path];
-						if ([executablePath hasPrefix:destinationPath]) {
-							destinationIsRunning = YES;
-							break;
-						}
-					}
-				}
-                // Use the shell to determine if the app is already running on systems 10.5 or lower
-				else {
-					NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(destinationPath)];
-					NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-					[task waitUntilExit];
-
-					// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
-					// Which means that the app is already running
-					destinationIsRunning = ([task terminationStatus] == 0);
-				}
-
-				if (destinationIsRunning) {
+				if (IsApplicationAtPathRunning(destinationPath)) {
 					// Give the running app focus and terminate myself
 					NSLog(@"INFO -- Switching to an already running version");
 					[[NSTask launchedTaskWithLaunchPath:@"/usr/bin/open" arguments:[NSArray arrayWithObject:destinationPath]] waitUntilExit];
@@ -214,19 +184,9 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 		exit(0);
 	}
-	else {
-		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-			// Save the alert suppress preference if checked
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-			if ([[alert suppressionButton] state] == NSOnState) {
-				[[NSUserDefaults standardUserDefaults] setBool:YES forKey:AlertSuppressKey];
-			}
-#endif
-		}
-		else {
-			// Always suppress after the first decline on 10.4 since there is no suppression checkbox
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:AlertSuppressKey];
-		}
+	// Save the alert suppress preference if checked
+	else if ([[alert suppressionButton] state] == NSOnState) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:AlertSuppressKey];
 	}
 
 	return;
@@ -277,11 +237,9 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 
 static BOOL IsInApplicationsFolder(NSString *path) {
 	// Check all the normal Application directories
-	NSEnumerator *e = [NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSAllDomainsMask, YES) objectEnumerator];
-	NSString *appDirPath = nil;
-
-	while ((appDirPath = [e nextObject])) {
-		if ([path hasPrefix:appDirPath]) return YES;
+	NSArray *applicationDirs = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSAllDomainsMask, YES);
+	for (NSString *appDir in applicationDirs) {
+		if ([path hasPrefix:appDir]) return YES;
 	}
 
 	// Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
@@ -293,21 +251,35 @@ static BOOL IsInApplicationsFolder(NSString *path) {
 }
 
 static BOOL IsInDownloadsFolder(NSString *path) {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-	// 10.5 or higher has NSDownloadsDirectory
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-		NSEnumerator *e = [NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSAllDomainsMask, YES) objectEnumerator];
-		NSString *downloadsDirPath = nil;
+	NSArray *downloadDirs = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSAllDomainsMask, YES);
+	for (NSString *downloadsDirPath in downloadDirs) {
+		if ([path hasPrefix:downloadsDirPath]) return YES;
+	}
 
-		while ((downloadsDirPath = [e nextObject])) {
-			if ([path hasPrefix:downloadsDirPath]) return YES;
+	return NO;
+}
+
+static BOOL IsApplicationAtPathRunning(NSString *path) {
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
+	// Use the new API on 10.6 or higher to determine if the app is already running
+	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
+			NSString *executablePath = [[runningApplication executableURL] path];
+			if ([executablePath hasPrefix:path]) {
+				return YES;
+			}
 		}
-
 		return NO;
 	}
 #endif
-	// 10.4
-	return [[[path stringByDeletingLastPathComponent] lastPathComponent] isEqualToString:@"Downloads"];
+	// Use the shell to determine if the app is already running on systems 10.5 or lower
+	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(path)];
+	NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
+	[task waitUntilExit];
+
+	// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
+	// Which means that the app is already running
+	return [task terminationStatus] == 0;
 }
 
 static NSString *ContainingDiskImageDevice(void) {
@@ -328,13 +300,16 @@ static NSString *ContainingDiskImageDevice(void) {
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
 	id info;
-
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
 	}
 	else {
+#endif
 		info = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:NULL errorDescription:NULL];
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	}
+#endif
 
 	if (![info isKindOfClass:[NSDictionary class]])
 		return nil;
@@ -465,28 +440,15 @@ fail:
 
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath) {
 	NSFileManager *fm = [NSFileManager defaultManager];
+	NSError *error = nil;
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-	// 10.5 or higher
-	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-		NSError *error = nil;
-		if ([fm copyItemAtPath:srcPath toPath:dstPath error:&error]) {
-			return YES;
-		}
-		else {
-			NSLog(@"ERROR -- Could not copy '%@' to '%@' (%@)", srcPath, dstPath, error);
-		}
-	}
-#endif
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-	if ([fm copyPath:srcPath toPath:dstPath handler:nil]) {
+	if ([fm copyItemAtPath:srcPath toPath:dstPath error:&error]) {
 		return YES;
 	}
 	else {
-		NSLog(@"ERROR -- Could not copy '%@' to '%@'", srcPath, dstPath);
+		NSLog(@"ERROR -- Could not copy '%@' to '%@' (%@)", srcPath, dstPath, error);
+		return NO;
 	}
-#endif
-	return NO;
 }
 
 static NSString *ShellQuotedString(NSString *string) {
@@ -506,15 +468,13 @@ static void Relaunch(NSString *destinationPath) {
 	// OS X >=10.5:
 	// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
 	// duplicate "scary file from the internet" dialog.
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		// Add the -r flag on 10.6
 		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine %@", quotedDestinationPath];
 	}
-	else if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
+	else {
 		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine %@", quotedDestinationPath];
 	}
-#endif
 
 	NSString *script = [NSString stringWithFormat:@"(while /bin/kill -0 %d >&/dev/null; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
