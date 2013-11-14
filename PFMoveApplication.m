@@ -49,6 +49,7 @@ static BOOL IsLaunchedFromDMG();
 static BOOL Trash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath);
+static NSString *ShellQuotedString(NSString *string);
 static void Relaunch();
 
 // Main worker function
@@ -151,7 +152,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 				// Use the shell to determine if the app is already running on systems 10.5 or lower
 				if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_5) {
-					NSString *script = [NSString stringWithFormat:@"ps ax -o comm | grep '%@/' | grep -v grep >/dev/null", destinationPath];
+					NSString *script = [NSString stringWithFormat:@"ps ax -o comm | grep %@/ | grep -v grep >/dev/null", ShellQuotedString(destinationPath)];
 					NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 					[task waitUntilExit];
 
@@ -418,6 +419,10 @@ static BOOL CopyBundle(NSString *srcPath, NSString *dstPath) {
 	return NO;
 }
 
+static NSString *ShellQuotedString(NSString *string) {
+    return [NSString stringWithFormat:@"'%@'", [string stringByReplacingOccurrencesOfString:@"'" withString:@"'\\''"]];
+}
+
 static void Relaunch(NSString *destinationPath) {
 	// The shell script waits until the original app process terminates.
 	// This is done so that the relaunched app opens as the front-most app.
@@ -426,27 +431,29 @@ static void Relaunch(NSString *destinationPath) {
 	// Command run just before running open /final/path
 	NSString *preOpenCmd = @"";
 
+    NSString *quotedDestinationPath = ShellQuotedString(destinationPath);
+
 	// OS X >=10.5:
 	// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
 	// duplicate "scary file from the internet" dialog.
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		// Add the -r flag on 10.6
-		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine '%@';", destinationPath];
+		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d -r com.apple.quarantine %@", quotedDestinationPath];
 	}
 	else if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
-		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine '%@';", destinationPath];
+		preOpenCmd = [NSString stringWithFormat:@"/usr/bin/xattr -d com.apple.quarantine %@", quotedDestinationPath];
 	}
 #endif
 
-	NSString *script = [NSString stringWithFormat:@"(while [ `ps -p %d | wc -l` -gt 1 ]; do sleep 0.1; done; %@ open '%@') &", pid, preOpenCmd, destinationPath];
+	NSString *script = [NSString stringWithFormat:@"(while [ `ps -p %d | wc -l` -gt 1 ]; do sleep 0.1; done; %@; open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
 	[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 
 	// Launched from within a DMG? -- unmount (if no files are open after 5 seconds,
 	// otherwise leave it mounted).
 	if (IsLaunchedFromDMG()) {
-		script = [NSString stringWithFormat:@"(sleep 5 && hdiutil detach '%@') &", [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent]];
+		script = [NSString stringWithFormat:@"(sleep 5 && hdiutil detach %@) &", ShellQuotedString([[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent])];
 		[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 	}
 
