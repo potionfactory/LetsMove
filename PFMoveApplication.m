@@ -7,9 +7,12 @@
 //  The contents of this file are dedicated to the public domain.
 
 #import "PFMoveApplication.h"
+
 #import "NSString+SymlinksAndAliases.h"
 #import <Security/Security.h>
 #import <dlfcn.h>
+#import <sys/param.h>
+#import <sys/mount.h>
 
 // Strings
 // These are macros to be able to use custom i18n tools
@@ -45,7 +48,7 @@ static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
-static BOOL IsLaunchedFromDMG();
+static NSString *ContainingDiskImageDevice();
 static BOOL Trash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath);
@@ -66,7 +69,8 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
 
-	BOOL isLaunchedFromDMG = IsLaunchedFromDMG();
+	// Are we on a disk image?
+	NSString *diskImageDevice = ContainingDiskImageDevice();
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -193,12 +197,21 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		// NOTE: This final delete does not work if the source bundle is in a network mounted volume.
 		//       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
 		//       but it'd be great if someone could fix this.
-		if (!isLaunchedFromDMG && !Trash(bundlePath)) {
+		if (diskImageDevice == nil && !Trash(bundlePath)) {
 			NSLog(@"WARNING -- Could not delete application after moving it to Applications folder");
 		}
 
 		// Relaunch.
 		Relaunch(destinationPath);
+
+		// Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
+		// otherwise leave it mounted).
+		if (diskImageDevice != nil) {
+			NSString *script = [NSString stringWithFormat:@"(/bin/sleep 5 && /usr/bin/hdiutil detach %@) &", ShellQuotedString(diskImageDevice)];
+			[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
+		}
+
+		exit(0);
 	}
 	else {
 		if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_4) {
@@ -296,13 +309,57 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 	return [[[path stringByDeletingLastPathComponent] lastPathComponent] isEqualToString:@"Downloads"];
 }
 
-static BOOL IsLaunchedFromDMG() {
-	// Guess if we have launched from a disk image
-	NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-	NSFileManager *fm = [NSFileManager defaultManager];
-	BOOL bundlePathIsWritable = [fm isWritableFileAtPath:bundlePath];
+static NSString *ContainingDiskImageDevice() {
+	NSString *containingPath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
 
-	return [bundlePath hasPrefix:@"/Volumes/"] && !bundlePathIsWritable;
+	struct statfs fs;
+	if (statfs([containingPath fileSystemRepresentation], &fs) || (fs.f_flags & MNT_ROOTFS))
+		return nil;
+
+	NSString *device = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:fs.f_mntfromname length:strlen(fs.f_mntfromname)];
+
+	NSTask *hdiutil = [[[NSTask alloc] init] autorelease];
+	[hdiutil setLaunchPath:@"/usr/bin/hdiutil"];
+	[hdiutil setArguments:[NSArray arrayWithObjects:@"info", @"-plist", nil]];
+	[hdiutil setStandardOutput:[NSPipe pipe]];
+	[hdiutil launch];
+	[hdiutil waitUntilExit];
+
+	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
+	id info;
+
+	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
+		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
+	}
+	else {
+		info = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:NULL errorDescription:NULL];
+	}
+
+	if (![info isKindOfClass:[NSDictionary class]])
+		return nil;
+
+	id images = [info objectForKey:@"images"];
+	if (![images isKindOfClass:[NSArray class]])
+		return nil;
+
+	for (id image in images) {
+		if (![image isKindOfClass:[NSDictionary class]])
+			return nil;
+
+		id systemEntities = [image objectForKey:@"system-entities"];
+		if (![systemEntities isKindOfClass:[NSArray class]])
+			return nil;
+
+		for (id systemEntity in systemEntities) {
+			id devEntry = [systemEntity objectForKey:@"dev-entry"];
+			if (![devEntry isKindOfClass:[NSString class]])
+				return nil;
+			if ([devEntry isEqualToString:device])
+				return device;
+		}
+	}
+
+	return nil;
 }
 
 static BOOL Trash(NSString *path) {
@@ -449,13 +506,4 @@ static void Relaunch(NSString *destinationPath) {
 	NSString *script = [NSString stringWithFormat:@"(while /bin/kill -0 %d >&/dev/null; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
 	[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-
-	// Launched from within a DMG? -- unmount (if no files are open after 5 seconds,
-	// otherwise leave it mounted).
-	if (IsLaunchedFromDMG()) {
-		script = [NSString stringWithFormat:@"(/bin/sleep 5 && /usr/bin/hdiutil detach %@) &", ShellQuotedString([[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent])];
-		[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-	}
-
-	exit(0);
 }
