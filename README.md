@@ -84,7 +84,7 @@ Version History
 
 Requirements
 ------------
-Builds and runs on Mac OS X 10.4 or higher.
+Builds and runs on Mac OS X 10.5 or higher.
 
 
 Code Contributors:
