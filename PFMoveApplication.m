@@ -150,18 +150,8 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 				// But first, make sure that it's not running
 				BOOL destinationIsRunning = NO;
 
-				// Use the shell to determine if the app is already running on systems 10.5 or lower
-				if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_5) {
-					NSString *script = [NSString stringWithFormat:@"ps ax -o comm | grep %@/ | grep -v grep >/dev/null", ShellQuotedString(destinationPath)];
-					NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
-					[task waitUntilExit];
-
-					// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
-					// Which means that the app is already running
-					destinationIsRunning = ([task terminationStatus] == 0);
-				}
-				// Use the new API on 10.6 or higher
-				else {
+				// Use the new API on 10.6 or higher to determine if the app is already running
+				if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 					for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
 						NSString *executablePath = [[runningApplication executableURL] path];
 						if ([executablePath hasPrefix:destinationPath]) {
@@ -169,6 +159,16 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 							break;
 						}
 					}
+				}
+                // Use the shell to determine if the app is already running on systems 10.5 or lower
+				else {
+					NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(destinationPath)];
+					NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
+					[task waitUntilExit];
+
+					// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
+					// Which means that the app is already running
+					destinationIsRunning = ([task terminationStatus] == 0);
 				}
 
 				if (destinationIsRunning) {
@@ -446,14 +446,14 @@ static void Relaunch(NSString *destinationPath) {
 	}
 #endif
 
-	NSString *script = [NSString stringWithFormat:@"(while [ `ps -p %d | wc -l` -gt 1 ]; do sleep 0.1; done; %@; open %@) &", pid, preOpenCmd, quotedDestinationPath];
+	NSString *script = [NSString stringWithFormat:@"(while [ `/bin/ps -p %d | /usr/bin/wc -l` -gt 1 ]; do /bin/sleep 0.1; done; %@; /usr/bin/open %@) &", pid, preOpenCmd, quotedDestinationPath];
 
 	[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 
 	// Launched from within a DMG? -- unmount (if no files are open after 5 seconds,
 	// otherwise leave it mounted).
 	if (IsLaunchedFromDMG()) {
-		script = [NSString stringWithFormat:@"(sleep 5 && hdiutil detach %@) &", ShellQuotedString([[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent])];
+		script = [NSString stringWithFormat:@"(/bin/sleep 5 && /usr/bin/hdiutil detach %@) &", ShellQuotedString([[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent])];
 		[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 	}
 
