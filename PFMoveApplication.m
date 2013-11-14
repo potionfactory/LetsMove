@@ -48,12 +48,12 @@ static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
-static NSString *ContainingDiskImageDevice();
+static NSString *ContainingDiskImageDevice(void);
 static BOOL Trash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath);
 static NSString *ShellQuotedString(NSString *string);
-static void Relaunch();
+static void Relaunch(NSString *destinationPath);
 
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary(void) {
@@ -309,7 +309,7 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 	return [[[path stringByDeletingLastPathComponent] lastPathComponent] isEqualToString:@"Downloads"];
 }
 
-static NSString *ContainingDiskImageDevice() {
+static NSString *ContainingDiskImageDevice(void) {
 	NSString *containingPath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
 
 	struct statfs fs;
