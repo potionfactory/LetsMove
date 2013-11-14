@@ -50,6 +50,7 @@ static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
 static NSString *ContainingDiskImageDevice(void);
 static BOOL Trash(NSString *path);
+static BOOL DeleteOrTrash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
 static BOOL CopyBundle(NSString *srcPath, NSString *dstPath);
 static NSString *ShellQuotedString(NSString *string);
@@ -197,7 +198,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		// NOTE: This final delete does not work if the source bundle is in a network mounted volume.
 		//       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
 		//       but it'd be great if someone could fix this.
-		if (diskImageDevice == nil && !Trash(bundlePath)) {
+		if (diskImageDevice == nil && !DeleteOrTrash(bundlePath)) {
 			NSLog(@"WARNING -- Could not delete application after moving it to Applications folder");
 		}
 
@@ -373,6 +374,18 @@ static BOOL Trash(NSString *path) {
 	else {
 		NSLog(@"ERROR -- Could not trash '%@'", path);
 		return NO;
+	}
+}
+
+static BOOL DeleteOrTrash(NSString *path) {
+	NSError *error;
+
+	if ([[NSFileManager defaultManager] removeItemAtPath:path error:&error]) {
+		return YES;
+	}
+	else {
+		NSLog(@"WARNING -- Could not delete '%@': %@", path, [error localizedDescription]);
+		return Trash(path);
 	}
 }
 
