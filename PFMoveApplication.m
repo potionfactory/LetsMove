@@ -1,5 +1,5 @@
 //
-//  PFMoveApplication.m, version 1.9
+//  PFMoveApplication.m, version 1.10
 //  LetsMove
 //
 //  Created by Andy Kim at Potion Factory LLC on 9/17/09
@@ -8,7 +8,6 @@
 
 #import "PFMoveApplication.h"
 
-#import "NSString+SymlinksAndAliases.h"
 #import <Security/Security.h>
 #import <dlfcn.h>
 #import <sys/param.h>
@@ -224,7 +223,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 			for (NSString *contentsPath in contents) {
 				if ([[contentsPath pathExtension] isEqualToString:@"app"]) {
 					if (isUserDirectory) *isUserDirectory = YES;
-					return [userApplicationsDir stringByResolvingSymlinksAndAliases];
+					return [userApplicationsDir stringByResolvingSymlinksInPath];
 				}
 			}
 		}
@@ -232,7 +231,8 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 
 	// No user Applications directory in use. Return the machine local Applications directory
 	if (isUserDirectory) *isUserDirectory = NO;
-	return [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByResolvingSymlinksAndAliases];
+
+	return [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSLocalDomainMask, YES) lastObject] stringByResolvingSymlinksInPath];
 }
 
 static BOOL IsInApplicationsFolder(NSString *path) {

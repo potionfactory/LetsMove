@@ -26,6 +26,9 @@ Public domain
 Version History
 ---------------
 
+* 1.10
+	- Fixed deprecation warnings that show up when building against the OS X 10.9 SDK.
+
 * 1.9
 	- Removed OS X 10.4 support
 	- Properly detect if the running app is in a disk image
