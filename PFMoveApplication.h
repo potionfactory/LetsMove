@@ -8,4 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-void PFMoveToApplicationsFolderIfNecessary(void);
+#ifdef __cplusplus
+extern "C" {
+    void PFMoveToApplicationsFolderIfNecessary(void);
+}
+#endif
