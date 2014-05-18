@@ -10,6 +10,10 @@
 
 #ifdef __cplusplus
 extern "C" {
-    void PFMoveToApplicationsFolderIfNecessary(void);
+#endif
+
+void PFMoveToApplicationsFolderIfNecessary(void);
+
+#ifdef __cplusplus
 }
 #endif
