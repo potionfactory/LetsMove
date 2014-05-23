@@ -10,12 +10,12 @@ Copy the following files into your project:
 
 - PFMoveApplication.h
 - PFMoveApplication.m
-- NSString+SymlinksAndAliases.h
-- NSString+SymlinksAndAliases.m
 
 In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
 
-If your project has ARC enabled, you'll want to disable ARC on the above files. You can do so by adding -fno-objc-arc compiler flag to your NSString+SymlinksAndAliases.m and PFMoveApplication.m source files. See http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project/6658549#6658549
+If your project has ARC enabled, you'll want to disable ARC on the above files. You can do so by adding -fno-objc-arc compiler flag to your PFMoveApplication.m source file. See http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project/6658549#6658549
+
+If your application is localized, also copy the 'MoveApplication.string' files into your project.
 
 License
 -------
@@ -25,6 +25,9 @@ Public domain
 
 Version History
 ---------------
+
+* 1.11
+    - Objective-C++ compatibility
 
 * 1.10
 	- Fixed deprecation warnings that show up when building against the OS X 10.9 SDK.
