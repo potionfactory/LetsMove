@@ -7,48 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* LetsMoveAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* LetsMoveAppDelegate.m */; };
 		6317AB1E1068842E000355D9 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6317AB1D1068842E000355D9 /* Security.framework */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A10D5AD3106C082200E53420 /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A10D5AD1106C082200E53420 /* MoveApplication.strings */; };
 		A120E7F810630B160045BE3F /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A120E7F710630B160045BE3F /* PFMoveApplication.m */; };
+		A1339025192F8183009ABCE2 /* LetsMove-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* LetsMove-Info.plist */; };
+		A17CADEB192F7E14008A209F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE5192F7E14008A209F /* InfoPlist.strings */; };
+		A17CADEC192F7E14008A209F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE7192F7E14008A209F /* MainMenu.xib */; };
+		A17CADED192F7E14008A209F /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE9192F7E14008A209F /* MoveApplication.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0115ACB116F0A5170050AD83 /* ko */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* LetsMoveAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetsMoveAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* LetsMoveAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LetsMoveAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* LetsMove_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LetsMove_Prefix.pch; sourceTree = "<group>"; };
-		257C4710141B40250087919D /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MoveApplication.strings"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		3A85F5BA109373B6007143D7 /* French */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = French; path = French.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		3A85F5BB109374A8007143D7 /* Spanish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Spanish; path = Spanish.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		4D6F173F1100B52D00744BB5 /* German */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = German; path = German.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		6317AB1D1068842E000355D9 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
-		6C39736010D54A3E00515EB3 /* Dutch */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Dutch; path = Dutch.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		82A196561794175C0067D44C /* cs */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LetsMove-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LetsMove-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* LetsMove.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsMove.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A10D5AD2106C082200E53420 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		A10D5BFB106C550F00E53420 /* Japanese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Japanese; path = Japanese.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		A120E7F610630B160045BE3F /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
 		A120E7F710630B160045BE3F /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
-		A139021416FA4A8E001103D2 /* nb */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A1339024192F8183009ABCE2 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A17CADE6192F7E14008A209F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A17CADE8192F7E14008A209F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		A17CADEA192F7E14008A209F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C1192F81C200F1CCA3 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C2192F81D400F1CCA3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C3192F81DD00F1CCA3 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C4192F81E200F1CCA3 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C5192F81E700F1CCA3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C6192F81ED00F1CCA3 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C7192F81F100F1CCA3 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C8192F81F700F1CCA3 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38C9192F81FC00F1CCA3 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38CA192F820200F1CCA3 /* pt_BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt_BR; path = pt_BR.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38CB192F820900F1CCA3 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38CC192F820E00F1CCA3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A19B38CD192F821300F1CCA3 /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		A1A4C5A8106760B100AF3142 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		A1B3A84D11290C9600A72428 /* Danish */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Danish; path = Danish.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		A1C2C5DE15B9E9160075D09D /* Portuguese */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Portuguese; path = Portuguese.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		A1C2C5E015B9E9710075D09D /* pt-BR */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/MoveApplication.strings"; sourceTree = "<group>"; };
-		A1C56A0711EAB56A00579B0C /* Italian */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Italian; path = Italian.lproj/MoveApplication.strings; sourceTree = "<group>"; };
-		FFA30E7310C401D000AC7AC8 /* Russian */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = Russian; path = Russian.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,9 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* LetsMove-Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				A10D5AD1106C082200E53420 /* MoveApplication.strings */,
-				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				A17CADE5192F7E14008A209F /* InfoPlist.strings */,
+				A17CADE7192F7E14008A209F /* MainMenu.xib */,
+				A17CADE9192F7E14008A209F /* MoveApplication.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -193,6 +194,18 @@
 				ko,
 				nb,
 				cs,
+				en,
+				da,
+				de,
+				es,
+				fr,
+				it,
+				ja,
+				nl,
+				pt_BR,
+				pt,
+				ru,
+				zh_CN,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* LetsMove */;
 			projectDirPath = "";
@@ -208,9 +221,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				A10D5AD3106C082200E53420 /* MoveApplication.strings in Resources */,
+				A17CADED192F7E14008A209F /* MoveApplication.strings in Resources */,
+				A1339025192F8183009ABCE2 /* LetsMove-Info.plist in Resources */,
+				A17CADEB192F7E14008A209F /* InfoPlist.strings in Resources */,
+				A17CADEC192F7E14008A209F /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,40 +244,40 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+		A17CADE5192F7E14008A209F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				A17CADE6192F7E14008A209F /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+		A17CADE7192F7E14008A209F /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1DDD58150DA1D0A300B32029 /* English */,
+				A17CADE8192F7E14008A209F /* en */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		A10D5AD1106C082200E53420 /* MoveApplication.strings */ = {
+		A17CADE9192F7E14008A209F /* MoveApplication.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A10D5AD2106C082200E53420 /* English */,
-				A1B3A84D11290C9600A72428 /* Danish */,
-				6C39736010D54A3E00515EB3 /* Dutch */,
-				3A85F5BA109373B6007143D7 /* French */,
-				4D6F173F1100B52D00744BB5 /* German */,
-				A1C56A0711EAB56A00579B0C /* Italian */,
-				A10D5BFB106C550F00E53420 /* Japanese */,
-				FFA30E7310C401D000AC7AC8 /* Russian */,
-				3A85F5BB109374A8007143D7 /* Spanish */,
-				257C4710141B40250087919D /* zh-Hans */,
-				A1C2C5DE15B9E9160075D09D /* Portuguese */,
-				A1C2C5E015B9E9710075D09D /* pt-BR */,
-				0115ACB116F0A5170050AD83 /* ko */,
-				A139021416FA4A8E001103D2 /* nb */,
-				82A196561794175C0067D44C /* cs */,
+				A17CADEA192F7E14008A209F /* en */,
+				A19B38CD192F821300F1CCA3 /* zh_CN */,
+				A1339024192F8183009ABCE2 /* cs */,
+				A19B38C1192F81C200F1CCA3 /* da */,
+				A19B38C9192F81FC00F1CCA3 /* nl */,
+				A19B38C4192F81E200F1CCA3 /* fr */,
+				A19B38C2192F81D400F1CCA3 /* de */,
+				A19B38C5192F81E700F1CCA3 /* it */,
+				A19B38C6192F81ED00F1CCA3 /* ja */,
+				A19B38C7192F81F100F1CCA3 /* ko */,
+				A19B38C8192F81F700F1CCA3 /* nb */,
+				A19B38CB192F820900F1CCA3 /* pt */,
+				A19B38CA192F820200F1CCA3 /* pt_BR */,
+				A19B38CC192F820E00F1CCA3 /* ru */,
+				A19B38C3192F81DD00F1CCA3 /* es */,
 			);
 			name = MoveApplication.strings;
 			sourceTree = "<group>";
