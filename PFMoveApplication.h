@@ -6,8 +6,6 @@
 //
 //  The contents of this file are dedicated to the public domain.
 
-#import <Foundation/Foundation.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif

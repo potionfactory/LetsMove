@@ -8,6 +8,8 @@
 
 #import "PFMoveApplication.h"
 
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #import <dlfcn.h>
 #import <sys/param.h>
