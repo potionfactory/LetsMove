@@ -26,6 +26,10 @@ Public domain
 Version History
 ---------------
 
+* 1.12
+    - Use country code based .lproj directories
+	- Make it compile for projects that don't use precompiled headers to import AppKit.framework
+
 * 1.11
     - Objective-C++ compatibility
 
