@@ -27,11 +27,13 @@ Version History
 ---------------
 
 * 1.12
-    - Use country code based .lproj directories
+	- Use country code based .lproj directories
 	- Make it compile for projects that don't use precompiled headers to import AppKit.framework
+	- Minor adjustment to Dutch localization
+	- Warning fixes in example project
 
 * 1.11
-    - Objective-C++ compatibility
+	- Objective-C++ compatibility
 
 * 1.10
 	- Fixed deprecation warnings that show up when building against the OS X 10.9 SDK.
