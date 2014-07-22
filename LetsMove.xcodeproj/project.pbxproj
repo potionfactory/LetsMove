@@ -49,6 +49,9 @@
 		A19B38CC192F820E00F1CCA3 /* ru */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		A19B38CD192F821300F1CCA3 /* zh_CN */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		A1A4C5A8106760B100AF3142 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		B2A84660197EAB71008A4ACA /* hu */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		B2A84661197EAB79008A4ACA /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		B2A84662197EAB85008A4ACA /* sr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +208,9 @@
 				pt,
 				ru,
 				zh_CN,
+				hu,
+				tr,
+				sr,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* LetsMove */;
 			projectDirPath = "";
@@ -276,6 +282,9 @@
 				A19B38CA192F820200F1CCA3 /* pt_BR */,
 				A19B38CC192F820E00F1CCA3 /* ru */,
 				A19B38C3192F81DD00F1CCA3 /* es */,
+				B2A84660197EAB71008A4ACA /* hu */,
+				B2A84661197EAB79008A4ACA /* tr */,
+				B2A84662197EAB85008A4ACA /* sr */,
 			);
 			name = MoveApplication.strings;
 			sourceTree = "<group>";
