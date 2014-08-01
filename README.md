@@ -26,6 +26,9 @@ Public domain
 Version History
 ---------------
 
+* 1.13
+	- Polish localization added
+
 * 1.12
 	- Use country code based .lproj directories
 	- Make it compile for projects that don't use precompiled headers to import AppKit.framework
@@ -135,3 +138,4 @@ Translators:
 * Victor Figueiredo (Brazilian Portuguese)
 * AppLingua (Korean)
 * Czech X Team (Czech)
+* Marek Telecki (Polish)
