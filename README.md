@@ -27,6 +27,7 @@ Version History
 ---------------
 
 * 1.13
+	- Macedonian localization added
 	- Polish localization added
 
 * 1.12
@@ -139,3 +140,4 @@ Translators:
 * AppLingua (Korean)
 * Czech X Team (Czech)
 * Marek Telecki (Polish)
+* Petar Vlahu (Macedonian)
