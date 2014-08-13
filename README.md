@@ -26,8 +26,11 @@ Public domain
 Version History
 ---------------
 
-* 1.13
+* 1.14
+	- Hugarian, Serbian, and Turkish localizations added
 	- Macedonian localization added
+
+* 1.13
 	- Polish localization added
 
 * 1.12
@@ -141,3 +144,4 @@ Translators:
 * Czech X Team (Czech)
 * Marek Telecki (Polish)
 * Petar Vlahu (Macedonian)
+* Václav Slavík (Hungarian, Serbian, and Turkish)
