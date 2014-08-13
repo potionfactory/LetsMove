@@ -53,6 +53,7 @@
 		B2A84660197EAB71008A4ACA /* hu */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		B2A84661197EAB79008A4ACA /* tr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		B2A84662197EAB85008A4ACA /* sr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		C3A14200EF754221ACE32119 /* mk */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = mk; path = mk.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,21 +180,9 @@
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LetsMove" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
-				Russian,
-				Dutch,
-				Spanish,
-				Danish,
-				Italian,
-				"zh-Hans",
-				Portuguese,
-				"pt-BR",
 				ko,
 				nb,
 				cs,
@@ -288,6 +277,7 @@
 				B2A84660197EAB71008A4ACA /* hu */,
 				B2A84661197EAB79008A4ACA /* tr */,
 				B2A84662197EAB85008A4ACA /* sr */,
+				C3A14200EF754221ACE32119 /* mk */,
 			);
 			name = MoveApplication.strings;
 			sourceTree = "<group>";
