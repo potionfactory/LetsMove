@@ -26,6 +26,9 @@ Public domain
 Version History
 ---------------
 
+* 1.15
+	- Swedish localization added
+
 * 1.14
 	- Hugarian, Serbian, and Turkish localizations added
 	- Macedonian localization added
@@ -145,3 +148,5 @@ Translators:
 * Marek Telecki (Polish)
 * Petar Vlahu (Macedonian)
 * Václav Slavík (Hungarian, Serbian, and Turkish)
+* Erik Vikström (Swedish)
+
