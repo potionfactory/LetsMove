@@ -26,6 +26,9 @@ Public domain
 Version History
 ---------------
 
+* 1.16
+	- Deprecation warning that appears when minimum deployment target is set to OS X 10.10 taken care of
+
 * 1.15
 	- Swedish localization added
 
