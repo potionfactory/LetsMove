@@ -3,6 +3,12 @@ LetsMove
 
 A sample project that demonstrates how to move a running Mac OS X application to the Applications folder.
 
+
+Requirements
+------------
+Builds and runs on Mac OS X 10.5 or higher. Does NOT support sandboxed applications.
+
+
 Usage
 -----
 
@@ -16,6 +22,7 @@ In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFM
 If your project has ARC enabled, you'll want to disable ARC on the above files. You can do so by adding -fno-objc-arc compiler flag to your PFMoveApplication.m source file. See http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project/6658549#6658549
 
 If your application is localized, also copy the 'MoveApplication.string' files into your project.
+
 
 License
 -------
@@ -115,11 +122,6 @@ Version History
 	- First release
 
 
-Requirements
-------------
-Builds and runs on Mac OS X 10.5 or higher.
-
-
 Code Contributors:
 -------------
 * Andy Kim
@@ -132,6 +134,7 @@ Code Contributors:
 * Whitney Young
 * Nick Moore
 * Nicholas Riley
+
 
 Translators:
 ------------
