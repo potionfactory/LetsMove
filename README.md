@@ -33,6 +33,9 @@ Public domain
 Version History
 ---------------
 
+* 1.17
+	- Tranditional Chinese localization added.
+
 * 1.16
 	- Deprecation warning that appears when minimum deployment target is set to OS X 10.10 taken care of
 
@@ -155,4 +158,5 @@ Translators:
 * Petar Vlahu (Macedonian)
 * Václav Slavík (Hungarian, Serbian, and Turkish)
 * Erik Vikström (Swedish)
+* Inndy Lin (Traditional Chinese)
 
