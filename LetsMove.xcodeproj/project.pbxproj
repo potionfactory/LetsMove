@@ -15,6 +15,7 @@
 		A17CADEB192F7E14008A209F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE5192F7E14008A209F /* InfoPlist.strings */; };
 		A17CADEC192F7E14008A209F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE7192F7E14008A209F /* MainMenu.xib */; };
 		A17CADED192F7E14008A209F /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE9192F7E14008A209F /* MoveApplication.strings */; };
+		F7846CE51A9F83E100BFAF88 /* LetsMove-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* LetsMove-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		B2A84662197EAB85008A4ACA /* sr */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = sr; path = sr.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		B5B5D108198940DF0074DBCE /* pl */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		C3A14200EF754221ACE32119 /* mk */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = mk; path = mk.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		F7846CE41A9F83E100BFAF88 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +208,7 @@
 				tr,
 				sr,
 				sv,
+				ca,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* LetsMove */;
 			projectDirPath = "";
@@ -222,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A17CADED192F7E14008A209F /* MoveApplication.strings in Resources */,
+				F7846CE51A9F83E100BFAF88 /* LetsMove-Info.plist in Resources */,
 				A17CADEB192F7E14008A209F /* InfoPlist.strings in Resources */,
 				A17CADEC192F7E14008A209F /* MainMenu.xib in Resources */,
 			);
@@ -284,6 +288,7 @@
 				B2A84662197EAB85008A4ACA /* sr */,
 				C3A14200EF754221ACE32119 /* mk */,
 				A17ED68F1A00BA8B0032BA5B /* sv */,
+				F7846CE41A9F83E100BFAF88 /* ca */,
 			);
 			name = MoveApplication.strings;
 			sourceTree = "<group>";
