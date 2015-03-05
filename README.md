@@ -33,6 +33,9 @@ Public domain
 Version History
 ---------------
 
+* 1.18
+	- Catalan localization added
+
 * 1.17
 	- Tranditional Chinese localization added.
 
@@ -159,4 +162,4 @@ Translators:
 * Václav Slavík (Hungarian, Serbian, and Turkish)
 * Erik Vikström (Swedish)
 * Inndy Lin (Traditional Chinese)
-
+* aONe (Catalan)
