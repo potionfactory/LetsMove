@@ -302,7 +302,7 @@ static NSString *ContainingDiskImageDevice(void) {
 	[hdiutil waitUntilExit];
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
-	id info;
+	id info = nil;
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
