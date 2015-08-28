@@ -23,6 +23,7 @@ If your project has ARC enabled, you'll want to disable ARC on the above files. 
 
 If your application is localized, also copy the 'MoveApplication.string' files into your project.
 
+Link your application against Security.framework
 
 License
 -------
