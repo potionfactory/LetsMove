@@ -23,7 +23,7 @@ If your project has ARC enabled, you'll want to disable ARC on the above files. 
 
 If your application is localized, also copy the 'MoveApplication.string' files into your project.
 
-Link your application against Security.framework
+Link your application against Security.framework.
 
 License
 -------
@@ -33,6 +33,9 @@ Public domain
 
 Version History
 ---------------
+
+* 1.19
+	- Slovak localization added
 
 * 1.18
 	- Catalan localization added
@@ -164,3 +167,5 @@ Translators:
 * Erik Vikström (Swedish)
 * Inndy Lin (Traditional Chinese)
 * aONe (Catalan)
+* Marek Hrusovsky (Slovak)
+
