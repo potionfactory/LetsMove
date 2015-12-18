@@ -3,7 +3,8 @@ LetsMove
 
 A sample project that demonstrates how to move a running Mac OS X application to the Applications folder.
 
-![Screenshot](http://i.imgur.com/UFbfM7E.png)
+![Screenshot](http://i.imgur.com/euTRZiI.png)
+
 
 Requirements
 ------------
