@@ -332,6 +332,8 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 			return nil;
 
 		for (id systemEntity in systemEntities) {
+			if (![systemEntity isKindOfClass:[NSDictionary class]])
+				return nil;
 			id devEntry = [systemEntity objectForKey:@"dev-entry"];
 			if (![devEntry isKindOfClass:[NSString class]])
 				return nil;
