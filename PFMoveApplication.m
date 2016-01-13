@@ -246,9 +246,7 @@ static BOOL IsInApplicationsFolder(NSString *path) {
 	}
 
 	// Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
-	if ([[path pathComponents] containsObject:@"Applications"]) {
-		return YES;
-	}
+	if ([[path pathComponents] containsObject:@"Applications"]) return YES;
 
 	return NO;
 }
@@ -411,9 +409,7 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 		// risk we'll have to take for now.
 		security_AuthorizationExecuteWithPrivileges = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
 	}
-	if (!security_AuthorizationExecuteWithPrivileges) {
-		goto fail;
-	}
+	if (!security_AuthorizationExecuteWithPrivileges) goto fail;
 
 	// Delete the destination
 	{
