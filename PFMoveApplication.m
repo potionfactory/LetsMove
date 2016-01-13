@@ -376,7 +376,7 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 
 	// Make sure that the destination path is an app bundle. We're essentially running 'sudo rm -rf'
 	// so we really don't want to fuck this up.
-	if (![dstPath hasSuffix:@".app"]) return NO;
+	if (![[dstPath pathExtension] isEqualToString:@"app"]) return NO;
 
 	// Do some more checks
 	if ([[dstPath stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0) return NO;
