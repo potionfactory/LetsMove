@@ -46,6 +46,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
 static BOOL IsApplicationAtPathRunning(NSString *path);
+static BOOL IsApplicationAtPathNested(NSString *path);
 static NSString *ContainingDiskImageDevice(NSString *path);
 static BOOL Trash(NSString *path);
 static BOOL DeleteOrTrash(NSString *path);
@@ -62,14 +63,17 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// Path of the bundle
 	NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
 
+	// Check if the bundle is embedded in another application
+	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
+
 	// Skip if the application is already in some Applications folder
-	if (IsInApplicationsFolder(bundlePath)) return;
+	if (!isNestedApplication && IsInApplicationsFolder(bundlePath)) return;
 
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
 
 	// Are we on a disk image?
-	NSString *diskImageDevice = ContainingDiskImageDevice(bundlePath);
+	NSString *diskImageDevice = (isNestedApplication ? nil : ContainingDiskImageDevice(bundlePath));
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -170,7 +174,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		// NOTE: This final delete does not work if the source bundle is in a network mounted volume.
 		//       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
 		//       but it'd be great if someone could fix this.
-		if (diskImageDevice == nil && !DeleteOrTrash(bundlePath)) {
+		if (!isNestedApplication && diskImageDevice == nil && !DeleteOrTrash(bundlePath)) {
 			NSLog(@"WARNING -- Could not delete application after moving it to Applications folder");
 		}
 
@@ -281,6 +285,20 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	// If the task terminated with status 0, it means that the final grep produced 1 or more lines of output.
 	// Which means that the app is already running
 	return [task terminationStatus] == 0;
+}
+
+static BOOL IsApplicationAtPathNested(NSString *path) {
+	NSString *containingPath = [path stringByDeletingLastPathComponent];
+
+	NSArray *components = [containingPath pathComponents];
+	for (NSString *component in components)
+	{
+		if ([[component pathExtension] isEqualToString:@"app"]) {
+			return YES;
+		}
+	}
+
+	return NO;
 }
 
 static NSString *ContainingDiskImageDevice(NSString *path) {
