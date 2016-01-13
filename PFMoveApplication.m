@@ -319,7 +319,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 	if (![info isKindOfClass:[NSDictionary class]])
 		return nil;
 
-	id images = [info objectForKey:@"images"];
+	id images = [(NSDictionary *)info objectForKey:@"images"];
 	if (![images isKindOfClass:[NSArray class]])
 		return nil;
 
@@ -327,14 +327,14 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 		if (![image isKindOfClass:[NSDictionary class]])
 			return nil;
 
-		id systemEntities = [image objectForKey:@"system-entities"];
+		id systemEntities = [(NSDictionary *)image objectForKey:@"system-entities"];
 		if (![systemEntities isKindOfClass:[NSArray class]])
 			return nil;
 
 		for (id systemEntity in systemEntities) {
 			if (![systemEntity isKindOfClass:[NSDictionary class]])
 				return nil;
-			id devEntry = [systemEntity objectForKey:@"dev-entry"];
+			id devEntry = [(NSDictionary *)systemEntity objectForKey:@"dev-entry"];
 			if (![devEntry isKindOfClass:[NSString class]])
 				return nil;
 			if ([devEntry isEqualToString:device])
