@@ -46,7 +46,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
 static BOOL IsApplicationAtPathRunning(NSString *path);
-static NSString *ContainingDiskImageDevice(void);
+static NSString *ContainingDiskImageDevice(NSString *path);
 static BOOL Trash(NSString *path);
 static BOOL DeleteOrTrash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
@@ -69,7 +69,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	NSFileManager *fm = [NSFileManager defaultManager];
 
 	// Are we on a disk image?
-	NSString *diskImageDevice = ContainingDiskImageDevice();
+	NSString *diskImageDevice = ContainingDiskImageDevice(bundlePath);
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -285,8 +285,8 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	return [task terminationStatus] == 0;
 }
 
-static NSString *ContainingDiskImageDevice(void) {
-	NSString *containingPath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+static NSString *ContainingDiskImageDevice(NSString *path) {
+	NSString *containingPath = [path stringByDeletingLastPathComponent];
 
 	struct statfs fs;
 	if (statfs([containingPath fileSystemRepresentation], &fs) || (fs.f_flags & MNT_ROOTFS))
