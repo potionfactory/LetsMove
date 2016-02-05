@@ -67,7 +67,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
 
 	// Skip if the application is already in some Applications folder,
-    // unless it's inside another app's bundle.
+	// unless it's inside another app's bundle.
 	if (IsInApplicationsFolder(bundlePath) && !isNestedApplication) return;
 
 	// File Manager
@@ -266,8 +266,8 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 }
 
 static BOOL IsApplicationAtPathRunning(NSString *bundlePath) {
-    bundlePath = [bundlePath stringByStandardizingPath];
-    
+	bundlePath = [bundlePath stringByStandardizingPath];
+
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	// Use the new API on 10.6 or higher to determine if the app is already running
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
@@ -320,7 +320,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 	[hdiutil waitUntilExit];
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
-    NSDictionary *info = nil;
+	NSDictionary *info = nil;
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
@@ -336,7 +336,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 
 	if (![info isKindOfClass:[NSDictionary class]]) return nil;
 
-    NSArray *images = (NSArray *)[info objectForKey:@"images"];
+	NSArray *images = (NSArray *)[info objectForKey:@"images"];
 	if (![images isKindOfClass:[NSArray class]]) return nil;
 
 	for (NSDictionary *image in images) {
@@ -471,7 +471,7 @@ static BOOL CopyBundle(NSString *srcPath, NSString *dstPath) {
 }
 
 static NSString *ShellQuotedString(NSString *string) {
-    return [NSString stringWithFormat:@"'%@'", [string stringByReplacingOccurrencesOfString:@"'" withString:@"'\\''"]];
+	return [NSString stringWithFormat:@"'%@'", [string stringByReplacingOccurrencesOfString:@"'" withString:@"'\\''"]];
 }
 
 static void Relaunch(NSString *destinationPath) {
@@ -482,7 +482,7 @@ static void Relaunch(NSString *destinationPath) {
 	// Command run just before running open /final/path
 	NSString *preOpenCmd = @"";
 
-    NSString *quotedDestinationPath = ShellQuotedString(destinationPath);
+	NSString *quotedDestinationPath = ShellQuotedString(destinationPath);
 
 	// OS X >=10.5:
 	// Before we launch the new app, clear xattr:com.apple.quarantine to avoid
