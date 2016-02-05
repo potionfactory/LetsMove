@@ -264,13 +264,15 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 	return NO;
 }
 
-static BOOL IsApplicationAtPathRunning(NSString *path) {
+static BOOL IsApplicationAtPathRunning(NSString *bundlePath) {
+    bundlePath = [bundlePath stringByStandardizingPath];
+    
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	// Use the new API on 10.6 or higher to determine if the app is already running
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
-			NSString *executablePath = [[runningApplication executableURL] path];
-			if ([executablePath hasPrefix:path]) {
+			NSString *runningAppBundlePath = [[[runningApplication bundleURL] path] stringByStandardizingPath];
+			if ([runningAppBundlePath isEqualToString:bundlePath]) {
 				return YES;
 			}
 		}
@@ -278,7 +280,7 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	}
 #endif
 	// Use the shell to determine if the app is already running on systems 10.5 or lower
-	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(path)];
+	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(bundlePath)];
 	NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 	[task waitUntilExit];
 
