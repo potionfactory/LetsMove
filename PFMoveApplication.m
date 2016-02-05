@@ -320,7 +320,7 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 	[hdiutil waitUntilExit];
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
-	id info = nil;
+    NSDictionary *info = nil;
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
@@ -334,27 +334,23 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 	}
 #endif
 
-	if (![info isKindOfClass:[NSDictionary class]])
-		return nil;
+	if (![info isKindOfClass:[NSDictionary class]]) return nil;
 
-	id images = [(NSDictionary *)info objectForKey:@"images"];
-	if (![images isKindOfClass:[NSArray class]])
-		return nil;
+    NSArray *images = (NSArray *)[info objectForKey:@"images"];
+	if (![images isKindOfClass:[NSArray class]]) return nil;
 
-	for (id image in images) {
-		if (![image isKindOfClass:[NSDictionary class]])
-			return nil;
+	for (NSDictionary *image in images) {
+		if (![image isKindOfClass:[NSDictionary class]]) return nil;
 
-		id systemEntities = [(NSDictionary *)image objectForKey:@"system-entities"];
-		if (![systemEntities isKindOfClass:[NSArray class]])
-			return nil;
+		id systemEntities = [image objectForKey:@"system-entities"];
+		if (![systemEntities isKindOfClass:[NSArray class]]) return nil;
 
-		for (id systemEntity in systemEntities) {
-			if (![systemEntity isKindOfClass:[NSDictionary class]])
-				return nil;
-			id devEntry = [(NSDictionary *)systemEntity objectForKey:@"dev-entry"];
-			if (![devEntry isKindOfClass:[NSString class]])
-				return nil;
+		for (NSDictionary *systemEntity in systemEntities) {
+			if (![systemEntity isKindOfClass:[NSDictionary class]]) return nil;
+
+			NSString *devEntry = [systemEntity objectForKey:@"dev-entry"];
+			if (![devEntry isKindOfClass:[NSString class]]) return nil;
+
 			if ([devEntry isEqualToString:device])
 				return device;
 		}
