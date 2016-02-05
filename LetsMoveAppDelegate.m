@@ -20,6 +20,7 @@
 	// Note that if the user chooses to move the application,
 	// this call will never return. Therefore you can suppress
 	// any first run UI by putting it after this call.
+    NSLog(@"applicationWillFinishlaunching: %@", aNotification);
 	
 	PFMoveToApplicationsFolderIfNecessary();
 	

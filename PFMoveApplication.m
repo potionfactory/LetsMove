@@ -114,7 +114,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 		// Add deny button
 		NSButton *cancelButton = [alert addButtonWithTitle:kStrMoveApplicationButtonDoNotMove];
-		[cancelButton setKeyEquivalent:@"\e"];
+		[cancelButton setKeyEquivalent:[NSString stringWithFormat:@"%C", 0x1b]]; // Escape key
 
 		// Setup suppression button
 		[alert setShowsSuppressionButton:YES];
@@ -405,7 +405,7 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 
 	AuthorizationItem myItems = {kAuthorizationRightExecute, 0, NULL, 0};
 	AuthorizationRights myRights = {1, &myItems};
-	AuthorizationFlags myFlags = kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
+	AuthorizationFlags myFlags = (AuthorizationFlags)(kAuthorizationFlagInteractionAllowed | kAuthorizationFlagExtendRights | kAuthorizationFlagPreAuthorize);
 
 	err = AuthorizationCopyRights(myAuthorizationRef, &myRights, NULL, myFlags, NULL);
 	if (err != errAuthorizationSuccess) {
@@ -423,7 +423,9 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 		// if it is no longer accessible. If Apple removes the function entirely this will fail gracefully. If
 		// they keep the function and throw some sort of exception, this won't fail gracefully, but that's a
 		// risk we'll have to take for now.
-		security_AuthorizationExecuteWithPrivileges = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
+		security_AuthorizationExecuteWithPrivileges = (OSStatus (*)(AuthorizationRef, const char*,
+																   AuthorizationFlags, char* const*,
+																   FILE **)) dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
 	}
 	if (!security_AuthorizationExecuteWithPrivileges) goto fail;
 
