@@ -294,8 +294,7 @@ static BOOL IsApplicationAtPathNested(NSString *path) {
 	NSString *containingPath = [path stringByDeletingLastPathComponent];
 
 	NSArray *components = [containingPath pathComponents];
-	for (NSString *component in components)
-	{
+	for (NSString *component in components) {
 		if ([[component pathExtension] isEqualToString:@"app"]) {
 			return YES;
 		}
