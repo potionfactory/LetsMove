@@ -160,7 +160,7 @@ Translators:
 * Marco Improda (Italian)
 * Venj Chu (Simplified Chinese)
 * Sérgio Miranda (European Portuguese)
-* Victor Figueiredo (Brazilian Portuguese)
+* Victor Figueiredo and BR Lingo (Brazilian Portuguese)
 * AppLingua (Korean)
 * Czech X Team (Czech)
 * Marek Telecki (Polish)
