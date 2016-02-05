@@ -66,14 +66,15 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// Check if the bundle is embedded in another application
 	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
 
-	// Skip if the application is already in some Applications folder
-	if (!isNestedApplication && IsInApplicationsFolder(bundlePath)) return;
+	// Skip if the application is already in some Applications folder,
+    // unless it's inside another app's bundle.
+	if (IsInApplicationsFolder(bundlePath) && !isNestedApplication) return;
 
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
 
 	// Are we on a disk image?
-	NSString *diskImageDevice = (isNestedApplication ? nil : ContainingDiskImageDevice(bundlePath));
+	NSString *diskImageDevice = ContainingDiskImageDevice(bundlePath);
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -183,7 +184,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 		// Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
 		// otherwise leave it mounted).
-		if (diskImageDevice != nil) {
+		if (diskImageDevice && !isNestedApplication) {
 			NSString *script = [NSString stringWithFormat:@"(/bin/sleep 5 && /usr/bin/hdiutil detach %@) &", ShellQuotedString(diskImageDevice)];
 			[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 		}
