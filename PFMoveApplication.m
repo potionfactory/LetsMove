@@ -360,17 +360,26 @@ static NSString *ContainingDiskImageDevice(NSString *path) {
 }
 
 static BOOL Trash(NSString *path) {
-	if ([[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation
-													 source:[path stringByDeletingLastPathComponent]
-												destination:@""
-													  files:[NSArray arrayWithObject:[path lastPathComponent]]
-														tag:NULL]) {
-		return YES;
+	BOOL result = NO;
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_8
+	if (floor(NSAppKitVersionNumber) >= NSAppKitVersionNumber10_8) {
+		result = [[NSFileManager defaultManager] trashItemAtURL:[NSURL fileURLWithPath:path] resultingItemURL:NULL error:NULL];
 	}
-	else {
+#endif
+#if MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_11
+	if (!result) {
+		result = [[NSWorkspace sharedWorkspace] performFileOperation:NSWorkspaceRecycleOperation
+															  source:[path stringByDeletingLastPathComponent]
+														 destination:@""
+															   files:[NSArray arrayWithObject:[path lastPathComponent]]
+																 tag:NULL];
+	}
+#endif
+	if (!result) {
 		NSLog(@"ERROR -- Could not trash '%@'", path);
-		return NO;
 	}
+
+	return result;
 }
 
 static BOOL DeleteOrTrash(NSString *path) {
