@@ -36,6 +36,11 @@ Public domain
 Version History
 ---------------
 
+* 1.20
+	- Support for applications bundled inside another application
+	- Brazilian Portuguese localization slightly updated
+	- Build warnings fixed
+
 * 1.19
 	- Slovak localization added
 
