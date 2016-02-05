@@ -270,7 +270,7 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
 			NSString *executablePath = [[runningApplication executableURL] path];
-			if ([executablePath isEqualToString:path]) {
+			if ([executablePath hasPrefix:path]) {
 				return YES;
 			}
 		}
