@@ -46,7 +46,8 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
 static BOOL IsInDownloadsFolder(NSString *path);
 static BOOL IsApplicationAtPathRunning(NSString *path);
-static NSString *ContainingDiskImageDevice(void);
+static BOOL IsApplicationAtPathNested(NSString *path);
+static NSString *ContainingDiskImageDevice(NSString *path);
 static BOOL Trash(NSString *path);
 static BOOL DeleteOrTrash(NSString *path);
 static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *canceled);
@@ -62,14 +63,18 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// Path of the bundle
 	NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
 
-	// Skip if the application is already in some Applications folder
-	if (IsInApplicationsFolder(bundlePath)) return;
+	// Check if the bundle is embedded in another application
+	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
+
+	// Skip if the application is already in some Applications folder,
+    // unless it's inside another app's bundle.
+	if (IsInApplicationsFolder(bundlePath) && !isNestedApplication) return;
 
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
 
 	// Are we on a disk image?
-	NSString *diskImageDevice = ContainingDiskImageDevice();
+	NSString *diskImageDevice = ContainingDiskImageDevice(bundlePath);
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
@@ -170,7 +175,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		// NOTE: This final delete does not work if the source bundle is in a network mounted volume.
 		//       Calling rm or file manager's delete method doesn't work either. It's unlikely to happen
 		//       but it'd be great if someone could fix this.
-		if (diskImageDevice == nil && !DeleteOrTrash(bundlePath)) {
+		if (!isNestedApplication && diskImageDevice == nil && !DeleteOrTrash(bundlePath)) {
 			NSLog(@"WARNING -- Could not delete application after moving it to Applications folder");
 		}
 
@@ -179,7 +184,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 		// Launched from within a disk image? -- unmount (if no files are open after 5 seconds,
 		// otherwise leave it mounted).
-		if (diskImageDevice != nil) {
+		if (diskImageDevice && !isNestedApplication) {
 			NSString *script = [NSString stringWithFormat:@"(/bin/sleep 5 && /usr/bin/hdiutil detach %@) &", ShellQuotedString(diskImageDevice)];
 			[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 		}
@@ -246,9 +251,7 @@ static BOOL IsInApplicationsFolder(NSString *path) {
 	}
 
 	// Also, handle the case that the user has some other Application directory (perhaps on a separate data partition).
-	if ([[path pathComponents] containsObject:@"Applications"]) {
-		return YES;
-	}
+	if ([[path pathComponents] containsObject:@"Applications"]) return YES;
 
 	return NO;
 }
@@ -262,13 +265,15 @@ static BOOL IsInDownloadsFolder(NSString *path) {
 	return NO;
 }
 
-static BOOL IsApplicationAtPathRunning(NSString *path) {
+static BOOL IsApplicationAtPathRunning(NSString *bundlePath) {
+    bundlePath = [bundlePath stringByStandardizingPath];
+    
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	// Use the new API on 10.6 or higher to determine if the app is already running
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
-			NSString *executablePath = [[runningApplication executableURL] path];
-			if ([executablePath hasPrefix:path]) {
+			NSString *runningAppBundlePath = [[[runningApplication bundleURL] path] stringByStandardizingPath];
+			if ([runningAppBundlePath isEqualToString:bundlePath]) {
 				return YES;
 			}
 		}
@@ -276,7 +281,7 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	}
 #endif
 	// Use the shell to determine if the app is already running on systems 10.5 or lower
-	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(path)];
+	NSString *script = [NSString stringWithFormat:@"/bin/ps ax -o comm | /usr/bin/grep %@/ | /usr/bin/grep -v grep >/dev/null", ShellQuotedString(bundlePath)];
 	NSTask *task = [NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 	[task waitUntilExit];
 
@@ -285,8 +290,22 @@ static BOOL IsApplicationAtPathRunning(NSString *path) {
 	return [task terminationStatus] == 0;
 }
 
-static NSString *ContainingDiskImageDevice(void) {
-	NSString *containingPath = [[[NSBundle mainBundle] bundlePath] stringByDeletingLastPathComponent];
+static BOOL IsApplicationAtPathNested(NSString *path) {
+	NSString *containingPath = [path stringByDeletingLastPathComponent];
+
+	NSArray *components = [containingPath pathComponents];
+	for (NSString *component in components)
+	{
+		if ([[component pathExtension] isEqualToString:@"app"]) {
+			return YES;
+		}
+	}
+
+	return NO;
+}
+
+static NSString *ContainingDiskImageDevice(NSString *path) {
+	NSString *containingPath = [path stringByDeletingLastPathComponent];
 
 	struct statfs fs;
 	if (statfs([containingPath fileSystemRepresentation], &fs) || (fs.f_flags & MNT_ROOTFS))
@@ -302,7 +321,7 @@ static NSString *ContainingDiskImageDevice(void) {
 	[hdiutil waitUntilExit];
 
 	NSData *data = [[[hdiutil standardOutput] fileHandleForReading] readDataToEndOfFile];
-	id info = nil;
+    NSDictionary *info = nil;
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_5
 	if (floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_5) {
 		info = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:NULL];
@@ -316,25 +335,23 @@ static NSString *ContainingDiskImageDevice(void) {
 	}
 #endif
 
-	if (![info isKindOfClass:[NSDictionary class]])
-		return nil;
+	if (![info isKindOfClass:[NSDictionary class]]) return nil;
 
-	id images = [info objectForKey:@"images"];
-	if (![images isKindOfClass:[NSArray class]])
-		return nil;
+    NSArray *images = (NSArray *)[info objectForKey:@"images"];
+	if (![images isKindOfClass:[NSArray class]]) return nil;
 
-	for (id image in images) {
-		if (![image isKindOfClass:[NSDictionary class]])
-			return nil;
+	for (NSDictionary *image in images) {
+		if (![image isKindOfClass:[NSDictionary class]]) return nil;
 
 		id systemEntities = [image objectForKey:@"system-entities"];
-		if (![systemEntities isKindOfClass:[NSArray class]])
-			return nil;
+		if (![systemEntities isKindOfClass:[NSArray class]]) return nil;
 
-		for (id systemEntity in systemEntities) {
-			id devEntry = [systemEntity objectForKey:@"dev-entry"];
-			if (![devEntry isKindOfClass:[NSString class]])
-				return nil;
+		for (NSDictionary *systemEntity in systemEntities) {
+			if (![systemEntity isKindOfClass:[NSDictionary class]]) return nil;
+
+			NSString *devEntry = [systemEntity objectForKey:@"dev-entry"];
+			if (![devEntry isKindOfClass:[NSString class]]) return nil;
+
 			if ([devEntry isEqualToString:device])
 				return device;
 		}
@@ -374,7 +391,7 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 
 	// Make sure that the destination path is an app bundle. We're essentially running 'sudo rm -rf'
 	// so we really don't want to fuck this up.
-	if (![dstPath hasSuffix:@".app"]) return NO;
+	if (![[dstPath pathExtension] isEqualToString:@"app"]) return NO;
 
 	// Do some more checks
 	if ([[dstPath stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] == 0) return NO;
@@ -409,9 +426,7 @@ static BOOL AuthorizedInstall(NSString *srcPath, NSString *dstPath, BOOL *cancel
 		// risk we'll have to take for now.
 		security_AuthorizationExecuteWithPrivileges = dlsym(RTLD_DEFAULT, "AuthorizationExecuteWithPrivileges");
 	}
-	if (!security_AuthorizationExecuteWithPrivileges) {
-		goto fail;
-	}
+	if (!security_AuthorizationExecuteWithPrivileges) goto fail;
 
 	// Delete the destination
 	{
