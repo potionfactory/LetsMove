@@ -44,6 +44,7 @@
 static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
 static NSString *UtilitiesFolder = @"/Applications/Utilities";
 static NSString *UtilitiesAppCategory = @"public.app-category.utilities";
+static NSString *ApplicationCategoryType = @"LSApplicationCategoryType";
 
 // Helper functions
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
@@ -72,7 +73,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
 
 	// Check if the bundle is an utility
-	BOOL isUtility = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"LSApplicationCategoryType"] isEqualToString:UtilitiesAppCategory];
+	BOOL isUtility = [[[[NSBundle mainBundle] infoDictionary] objectForKey:ApplicationCategoryType] isEqualToString:UtilitiesAppCategory];
 
 	// Skip if the application is already in some Applications or Utilities folder,
 	// unless it's inside another app's bundle.
