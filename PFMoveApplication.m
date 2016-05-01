@@ -23,6 +23,9 @@
 #define kStrMoveApplicationQuestionTitleHome _I10NS(@"Move to Applications folder in your Home folder?")
 #define kStrMoveApplicationQuestionMessage _I10NS(@"I can move myself to the Applications folder if you'd like.")
 #define kStrMoveApplicationButtonMove _I10NS(@"Move to Applications Folder")
+#define kStrMoveApplicationUtilitiesTitle  _I10NS(@"Move to Utilities folder?")
+#define kStrMoveApplicationUtilitiesMessage _I10NS(@"I can move myself to the Utilities folder if you'd like.")
+#define kStrMoveApplicationUtilitiesMove _I10NS(@"Move to Utilities Folder")
 #define kStrMoveApplicationButtonDoNotMove _I10NS(@"Do Not Move")
 #define kStrMoveApplicationQuestionInfoWillRequirePasswd _I10NS(@"Note that this will require an administrator password.")
 #define kStrMoveApplicationQuestionInfoInDownloadsFolder _I10NS(@"This will keep your Downloads folder uncluttered.")
@@ -39,11 +42,14 @@
 
 
 static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
-
+static NSString *UtilitiesFolder = @"/Applications/Utilities";
+static NSString *UtilitiesAppCategory = @"public.app-category.utilities";
+static NSString *ApplicationCategoryType = @"LSApplicationCategoryType";
 
 // Helper functions
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
 static BOOL IsInApplicationsFolder(NSString *path);
+static BOOL IsInUtilitiesFolder(NSString* path);
 static BOOL IsInDownloadsFolder(NSString *path);
 static BOOL IsApplicationAtPathRunning(NSString *path);
 static BOOL IsApplicationAtPathNested(NSString *path);
@@ -66,9 +72,12 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// Check if the bundle is embedded in another application
 	BOOL isNestedApplication = IsApplicationAtPathNested(bundlePath);
 
-	// Skip if the application is already in some Applications folder,
+	// Check if the bundle is an utility
+	BOOL isUtility = [[[[NSBundle mainBundle] infoDictionary] objectForKey:ApplicationCategoryType] isEqualToString:UtilitiesAppCategory];
+
+	// Skip if the application is already in some Applications or Utilities folder,
 	// unless it's inside another app's bundle.
-	if (IsInApplicationsFolder(bundlePath) && !isNestedApplication) return;
+	if ((isUtility && IsInUtilitiesFolder(bundlePath)) || (IsInApplicationsFolder(bundlePath) && !isNestedApplication)) return;
 
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
@@ -78,7 +87,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 
 	// Since we are good to go, get the preferred installation directory.
 	BOOL installToUserApplications = NO;
-	NSString *applicationsDirectory = PreferredInstallLocation(&installToUserApplications);
+	NSString *applicationsDirectory = (isUtility?UtilitiesFolder:PreferredInstallLocation(&installToUserApplications));
 	NSString *bundleName = [bundlePath lastPathComponent];
 	NSString *destinationPath = [applicationsDirectory stringByAppendingPathComponent:bundleName];
 
@@ -93,9 +102,14 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	{
 		NSString *informativeText = nil;
 
-		[alert setMessageText:(installToUserApplications ? kStrMoveApplicationQuestionTitleHome : kStrMoveApplicationQuestionTitle)];
+        if( isUtility)
+            [alert setMessageText:kStrMoveApplicationUtilitiesTitle];
+        else if (installToUserApplications)
+            [alert setMessageText:kStrMoveApplicationQuestionTitleHome];
+        else
+            [alert setMessageText:kStrMoveApplicationQuestionTitle];
 
-		informativeText = kStrMoveApplicationQuestionMessage;
+		informativeText = (isUtility?kStrMoveApplicationUtilitiesMessage:kStrMoveApplicationQuestionMessage);
 
 		if (needAuthorization) {
 			informativeText = [informativeText stringByAppendingString:@" "];
@@ -110,7 +124,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		[alert setInformativeText:informativeText];
 
 		// Add accept button
-		[alert addButtonWithTitle:kStrMoveApplicationButtonMove];
+		[alert addButtonWithTitle:(isUtility?kStrMoveApplicationUtilitiesMove:kStrMoveApplicationButtonMove)];
 
 		// Add deny button
 		NSButton *cancelButton = [alert addButtonWithTitle:kStrMoveApplicationButtonDoNotMove];
@@ -254,6 +268,10 @@ static BOOL IsInApplicationsFolder(NSString *path) {
 	if ([[path pathComponents] containsObject:@"Applications"]) return YES;
 
 	return NO;
+}
+
+static BOOL IsInUtilitiesFolder(NSString* path) {
+    return [path hasPrefix:UtilitiesFolder];
 }
 
 static BOOL IsInDownloadsFolder(NSString *path) {
