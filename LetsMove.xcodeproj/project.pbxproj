@@ -18,6 +18,8 @@
 		F146F82A1CE7094400233A9B /* LetsMove.h in Headers */ = {isa = PBXBuildFile; fileRef = F146F8291CE7094400233A9B /* LetsMove.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F146F8301CE7097500233A9B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F146F82F1CE7097500233A9B /* Cocoa.framework */; };
 		F146F8321CE7097800233A9B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F146F8311CE7097800233A9B /* Security.framework */; };
+		F146F8331CE7124100233A9B /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE9192F7E14008A209F /* MoveApplication.strings */; };
+		F146F8341CE7125900233A9B /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A120E7F710630B160045BE3F /* PFMoveApplication.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -301,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F146F8331CE7124100233A9B /* MoveApplication.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +324,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F146F8341CE7125900233A9B /* PFMoveApplication.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +628,7 @@
 				F146F82E1CE7094400233A9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
