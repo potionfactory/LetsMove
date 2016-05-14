@@ -20,6 +20,7 @@
 		F146F8321CE7097800233A9B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F146F8311CE7097800233A9B /* Security.framework */; };
 		F146F8331CE7124100233A9B /* MoveApplication.strings in Resources */ = {isa = PBXBuildFile; fileRef = A17CADE9192F7E14008A209F /* MoveApplication.strings */; };
 		F146F8341CE7125900233A9B /* PFMoveApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = A120E7F710630B160045BE3F /* PFMoveApplication.m */; };
+		F146F8391CE7167F00233A9B /* PFMoveApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = A120E7F610630B160045BE3F /* PFMoveApplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		F146F82B1CE7094400233A9B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F146F82F1CE7097500233A9B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F146F8311CE7097800233A9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F146F8381CE7164D00233A9B /* LetsMove.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = LetsMove.modulemap; sourceTree = "<group>"; };
 		F7846CE41A9F83E100BFAF88 /* ca */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,6 +164,7 @@
 				A17CADE5192F7E14008A209F /* InfoPlist.strings */,
 				A17CADE7192F7E14008A209F /* MainMenu.xib */,
 				A17CADE9192F7E14008A209F /* MoveApplication.strings */,
+				F146F8381CE7164D00233A9B /* LetsMove.modulemap */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F146F82A1CE7094400233A9B /* LetsMove.h in Headers */,
+				F146F8391CE7167F00233A9B /* PFMoveApplication.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,6 +555,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = LetsMove.modulemap;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.potionfactory.LetsMove;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -592,6 +597,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MODULEMAP_FILE = LetsMove.modulemap;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.potionfactory.LetsMove;
 				PRODUCT_NAME = "$(TARGET_NAME)";
