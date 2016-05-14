@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8D1107260486CEB800E47090"
-               BuildableName = "LetsMove.app"
-               BlueprintName = "LetsMove Test"
+               BlueprintIdentifier = "F146F8261CE7094400233A9B"
+               BuildableName = "LetsMove.framework"
+               BlueprintName = "LetsMove"
                ReferencedContainer = "container:LetsMove.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "LetsMove.app"
-            BlueprintName = "LetsMove Test"
+            BlueprintIdentifier = "F146F8261CE7094400233A9B"
+            BuildableName = "LetsMove.framework"
+            BlueprintName = "LetsMove"
             ReferencedContainer = "container:LetsMove.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8D1107260486CEB800E47090"
-            BuildableName = "LetsMove.app"
-            BlueprintName = "LetsMove Test"
+            BlueprintIdentifier = "F146F8261CE7094400233A9B"
+            BuildableName = "LetsMove.framework"
+            BlueprintName = "LetsMove"
             ReferencedContainer = "container:LetsMove.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
