@@ -7,13 +7,4 @@
 //  The contents of this file are dedicated to the public domain.
 
 #import <Cocoa/Cocoa.h>
-
-//! Project version number for LetsMove.
-FOUNDATION_EXPORT double LetsMoveVersionNumber;
-
-//! Project version string for LetsMove.
-FOUNDATION_EXPORT const unsigned char LetsMoveVersionString[];
-
 #import <LetsMove/PFMoveApplication.h>
-
-
