@@ -217,7 +217,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 
 	NSFileManager *fm = [NSFileManager defaultManager];
 
-	NSArray *userApplicationsDirs = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES);
+	NSArray *userApplicationsDirs = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, NO);
 
 	if ([userApplicationsDirs count] > 0) {
 		NSString *userApplicationsDir = [userApplicationsDirs objectAtIndex:0];
