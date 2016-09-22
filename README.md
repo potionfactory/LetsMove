@@ -43,6 +43,9 @@ Public domain
 Version History
 ---------------
 
+* 1.22
+	- Fix not deleting or trashing itself after copying to /Applications in macOS Sierra
+
 * 1.21
 	- Support for [Carthage](https://github.com/Carthage/Carthage) added
 	- Project now support OS X 10.6 and higher
