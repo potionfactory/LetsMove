@@ -376,7 +376,9 @@ static BOOL Trash(NSString *path) {
 	}
 #endif
 	
-	// As a last resort try trashing with AppleScript
+	// As a last resort try trashing with AppleScript.
+	// This allows us to trash the app in macOS Sierra even when the app is running inside
+	// an app translocation image.
 	if (!result) {
 		NSAppleScript *appleScript = [[[NSAppleScript alloc] initWithSource:
 									   [NSString stringWithFormat:@"\
