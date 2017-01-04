@@ -12,12 +12,20 @@
 #import <Foundation/Foundation.h>
 #import <Security/Security.h>
 #import <dlfcn.h>
-#import <sys/param.h>
 #import <sys/mount.h>
+
+@interface LetsMove : NSObject
+@end
+
+@implementation LetsMove
++ (NSBundle *)bundle {
+	return [NSBundle bundleForClass:self];
+}
+@end
 
 // Strings
 // These are macros to be able to use custom i18n tools
-#define _I10NS(nsstr) NSLocalizedStringFromTable(nsstr, @"MoveApplication", nil)
+#define _I10NS(nsstr) NSLocalizedStringFromTableInBundle(nsstr, @"MoveApplication", [LetsMove bundle], nil)
 #define kStrMoveApplicationCouldNotMove _I10NS(@"Could not move to Applications folder")
 #define kStrMoveApplicationQuestionTitle  _I10NS(@"Move to Applications folder?")
 #define kStrMoveApplicationQuestionTitleHome _I10NS(@"Move to Applications folder in your Home folder?")
