@@ -39,6 +39,7 @@
 
 
 static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
+static NSString *HideAlertSuppressKey = @"moveToApplicationsFolderHideAlertSuppress";
 
 
 // Helper functions
@@ -58,7 +59,7 @@ static void Relaunch(NSString *destinationPath);
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary(void) {
 	// Skip if user suppressed the alert before
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:AlertSuppressKey]) return;
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:AlertSuppressKey] && ![[[NSBundle mainBundle] objectForInfoDictionaryKey:HideAlertSuppressKey] boolValue]) return;
 
 	// Path of the bundle
 	NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
@@ -115,9 +116,11 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		// Add deny button
 		NSButton *cancelButton = [alert addButtonWithTitle:kStrMoveApplicationButtonDoNotMove];
 		[cancelButton setKeyEquivalent:[NSString stringWithFormat:@"%C", 0x1b]]; // Escape key
-
+		
 		// Setup suppression button
-		[alert setShowsSuppressionButton:YES];
+		if (![[[NSBundle mainBundle] objectForInfoDictionaryKey:HideAlertSuppressKey] boolValue]) {
+			[alert setShowsSuppressionButton:YES];
+		}
 
 		if (PFUseSmallAlertSuppressCheckbox) {
 			NSCell *cell = [[alert suppressionButton] cell];
@@ -192,7 +195,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		exit(0);
 	}
 	// Save the alert suppress preference if checked
-	else if ([[alert suppressionButton] state] == NSOnState) {
+	else if (![[[NSBundle mainBundle] objectForInfoDictionaryKey:HideAlertSuppressKey] boolValue] && [[alert suppressionButton] state] == NSOnState) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:AlertSuppressKey];
 	}
 
