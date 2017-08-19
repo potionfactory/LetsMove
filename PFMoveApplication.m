@@ -57,6 +57,14 @@ static void Relaunch(NSString *destinationPath);
 
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary(void) {
+	if (![NSThread isMainThread])
+	{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			PFMoveToApplicationsFolderIfNecessary();
+		});
+		return;
+	}
+	
 	// Skip if user suppressed the alert before
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:AlertSuppressKey]) return;
 
@@ -215,7 +223,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 	// Assume that if the user has a ~/Applications folder, they'd prefer their
 	// applications to go there.
 
-	NSFileManager *fm = [NSFileManager defaultManager];
+	/*NSFileManager *fm = [NSFileManager defaultManager];
 
 	NSArray *userApplicationsDirs = NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES);
 
@@ -235,7 +243,7 @@ static NSString *PreferredInstallLocation(BOOL *isUserDirectory) {
 				}
 			}
 		}
-	}
+	}*/
 
 	// No user Applications directory in use. Return the machine local Applications directory
 	if (isUserDirectory) *isUserDirectory = NO;
