@@ -57,8 +57,10 @@ static void Relaunch(NSString *destinationPath);
 
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary(void) {
-	if (![NSThread isMainThread])
-	{
+
+	// Make sure to do our work on the main thread.
+	// Apparently Electron apps need this for things to work properly.
+	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
 			PFMoveToApplicationsFolderIfNecessary();
 		});
