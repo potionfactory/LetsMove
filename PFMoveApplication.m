@@ -427,7 +427,7 @@ static BOOL DeleteOrTrash(NSString *path) {
 	}
 	else {
 		// Don't log warning if on Sierra and running inside App Translocation path
-		if (![path containsString:@"/AppTranslocation/"])
+		if ([path rangeOfString:@"/AppTranslocation/"].location == NSNotFound)
 			NSLog(@"WARNING -- Could not delete '%@': %@", path, [error localizedDescription]);
 		
 		return Trash(path);
