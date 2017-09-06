@@ -57,6 +57,14 @@ static void Relaunch(NSString *destinationPath);
 
 // Main worker function
 void PFMoveToApplicationsFolderIfNecessary(void) {
+	if (![NSThread isMainThread])
+	{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			PFMoveToApplicationsFolderIfNecessary();
+		});
+		return;
+	}
+	
 	// Skip if user suppressed the alert before
 	if ([[NSUserDefaults standardUserDefaults] boolForKey:AlertSuppressKey]) return;
 
