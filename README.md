@@ -43,6 +43,12 @@ Public domain
 Version History
 ---------------
 
+* 1.23
+	- Fix localization not being used when built as a framework
+	- Fix backwards compatibility with OS X 10.9 and earlier being broken
+	- Make usable for Electron based apps or other apps that do not have access to the main thread dispatch queue
+	- Update Russian localization
+
 * 1.22
 	- Fix not deleting or trashing itself after copying to /Applications in macOS Sierra
 
