@@ -166,12 +166,13 @@ Code Contributors:
 * Nick Moore
 * Nicholas Riley
 * Matt Prowse
+* Maxim Ananov
 
 
 Translators:
 ------------
 * Eita Hayashi (Japanese)
-* Gleb M. Borisov (Russian)
+* Gleb M. Borisov, Maxim Ananov (Russian)
 * Wouter Broekhof (Dutch)
 * Rasmus Andersson / Spotify (French and Spanish)
 * Markus Kirschner (German)
