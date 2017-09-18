@@ -10,6 +10,12 @@
 extern "C" {
 #endif
 
+/**
+ Moves the running application to ~/Applications or /Applications if the former does not exist.
+ After the move, it relaunches app from the new location.
+ DOES NOT work for sandboxed applications.
+ 
+ Call from \c NSApplication's delegate method \c -applicationWillFinishLaunching: method. */
 void PFMoveToApplicationsFolderIfNecessary(void);
 
 /**
