@@ -11,7 +11,8 @@ extern "C" {
 #endif
 
 void PFMoveToApplicationsFolderIfNecessary(void);
-
+BOOL PFMoveIsInProgress();
+  
 #ifdef __cplusplus
 }
 #endif

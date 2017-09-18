@@ -47,7 +47,7 @@
 
 
 static NSString *AlertSuppressKey = @"moveToApplicationsFolderAlertSuppress";
-
+static BOOL MoveInProgress = NO;
 
 // Helper functions
 static NSString *PreferredInstallLocation(BOOL *isUserDirectory);
@@ -88,6 +88,9 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 	// unless it's inside another app's bundle.
 	if (IsInApplicationsFolder(bundlePath) && !isNestedApplication) return;
 
+	// OK, looks like we'll need to do a move - set the status variable appropriately
+	MoveInProgress = YES;
+	
 	// File Manager
 	NSFileManager *fm = [NSFileManager defaultManager];
 
@@ -159,6 +162,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 			if (!AuthorizedInstall(bundlePath, destinationPath, &authorizationCanceled)) {
 				if (authorizationCanceled) {
 					NSLog(@"INFO -- Not moving because user canceled authorization");
+					MoveInProgress = NO;
 					return;
 				}
 				else {
@@ -175,6 +179,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 					// Give the running app focus and terminate myself
 					NSLog(@"INFO -- Switching to an already running version");
 					[[NSTask launchedTaskWithLaunchPath:@"/usr/bin/open" arguments:[NSArray arrayWithObject:destinationPath]] waitUntilExit];
+					MoveInProgress = NO;
 					exit(0);
 				}
 				else {
@@ -207,6 +212,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 			[NSTask launchedTaskWithLaunchPath:@"/bin/sh" arguments:[NSArray arrayWithObjects:@"-c", script, nil]];
 		}
 
+		MoveInProgress = NO;
 		exit(0);
 	}
 	// Save the alert suppress preference if checked
@@ -214,6 +220,7 @@ void PFMoveToApplicationsFolderIfNecessary(void) {
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:AlertSuppressKey];
 	}
 
+	MoveInProgress = NO;
 	return;
 
 fail:
@@ -222,7 +229,16 @@ fail:
 		alert = [[[NSAlert alloc] init] autorelease];
 		[alert setMessageText:kStrMoveApplicationCouldNotMove];
 		[alert runModal];
+		MoveInProgress = NO;
 	}
+}
+
+// Function to check whether an app move is currently in progress
+// Returns YES if LetsMove is currently in-progress trying to move the app to the Applications folder, or NO otherwise
+// This can be used to work around a crash with apps that terminate after last window is closed.
+// See https://github.com/potionfactory/LetsMove/issues/64 for details.
+BOOL PFMoveIsInProgress() {
+    return MoveInProgress;
 }
 
 #pragma mark -
