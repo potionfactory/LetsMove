@@ -43,6 +43,9 @@ Public domain
 Version History
 ---------------
 
+* 1.24 - Unreleased
+	- Add PFMoveIsInProgress function
+
 * 1.23
 	- Fix localization not being used when built as a framework
 	- Fix backwards compatibility with OS X 10.9 and earlier being broken
@@ -173,6 +176,7 @@ Code Contributors:
 * Nicholas Riley
 * Matt Prowse
 * Maxim Ananov
+* Charlie Stigler
 
 
 Translators:
