@@ -233,10 +233,6 @@ fail:
 	}
 }
 
-// Function to check whether an app move is currently in progress
-// Returns YES if LetsMove is currently in-progress trying to move the app to the Applications folder, or NO otherwise
-// This can be used to work around a crash with apps that terminate after last window is closed.
-// See https://github.com/potionfactory/LetsMove/issues/64 for details.
 BOOL PFMoveIsInProgress() {
     return MoveInProgress;
 }
