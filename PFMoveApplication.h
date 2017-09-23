@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+#import <objc/objc.h>
+
 /**
  Moves the running application to ~/Applications or /Applications if the former does not exist.
  After the move, it relaunches app from the new location.
@@ -23,7 +25,7 @@ void PFMoveToApplicationsFolderIfNecessary(void);
  Returns YES if LetsMove is currently in-progress trying to move the app to the Applications folder, or NO otherwise.
  This can be used to work around a crash with apps that terminate after last window is closed.
  See https://github.com/potionfactory/LetsMove/issues/64 for details. */
-BOOL PFMoveIsInProgress();
+BOOL PFMoveIsInProgress(void);
 
 #ifdef __cplusplus
 }
