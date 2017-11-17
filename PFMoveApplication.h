@@ -12,6 +12,8 @@ extern "C" {
 	
 #import <Foundation/Foundation.h>
 
+#import <objc/objc.h>
+
 /**
  Moves the running application to ~/Applications or /Applications if the former does not exist.
  After the move, it relaunches app from the new location.
