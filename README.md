@@ -43,8 +43,9 @@ Public domain
 Version History
 ---------------
 
-* 1.24 - Unreleased
+* 1.24
 	- Add PFMoveIsInProgress function
+	- Update project for Xcode 9.1
 
 * 1.23
 	- Fix localization not being used when built as a framework
