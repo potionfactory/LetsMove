@@ -1,16 +1,16 @@
 Pod::Spec.new do |s|
   s.name         = "LetsMove"
-  s.version      = "1.24"
+  s.version      = "1.25"
   s.summary      = "Moves a running Mac application to the /Applications directory."
   s.homepage     = "https://github.com/potionfactory/LetsMove/"
   s.license      = 'Public Domain'
-  s.author       = { "Andy Kim" => "andy@potionfactory.com" }
+  s.author       = { "Andy Kim" => "andy@karelia.com" }
 
   s.platform     = :osx, '10.6'
 
   s.source = {
     :git => "https://github.com/potionfactory/LetsMove.git",
-    :tag => "v1.24"
+    :tag => "v1.25"
   }
 
   s.source_files = '*.{h,m}'
