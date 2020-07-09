@@ -34,6 +34,7 @@
 		A120E7F610630B160045BE3F /* PFMoveApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFMoveApplication.h; sourceTree = "<group>"; };
 		A120E7F710630B160045BE3F /* PFMoveApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PFMoveApplication.m; sourceTree = "<group>"; };
 		A1339024192F8183009ABCE2 /* cs */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/MoveApplication.strings; sourceTree = "<group>"; };
+		A178554A24B74D830036CB0A /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 		A17CADE6192F7E14008A209F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A17CADE8192F7E14008A209F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A17CADEA192F7E14008A209F /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MoveApplication.strings; sourceTree = "<group>"; };
@@ -250,6 +251,7 @@
 				sk,
 				mk,
 				"vi-VN",
+				el,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* LetsMove */;
 			projectDirPath = "";
@@ -348,6 +350,7 @@
 				F7846CE41A9F83E100BFAF88 /* ca */,
 				D2CC8CA81B90F10700F763DF /* sk */,
 				01F3187C242381EF007E0E18 /* vi-VN */,
+				A178554A24B74D830036CB0A /* el */,
 			);
 			name = MoveApplication.strings;
 			sourceTree = "<group>";
