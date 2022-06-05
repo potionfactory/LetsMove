@@ -18,7 +18,11 @@
 
 @implementation LetsMove
 + (NSBundle *)bundle {
+#ifdef SWIFT_PACKAGE
+	return SWIFTPM_MODULE_BUNDLE;
+#else
 	return [NSBundle bundleForClass:self];
+#endif
 }
 @end
 

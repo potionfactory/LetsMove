@@ -11,14 +11,38 @@ Requirements
 Builds and runs on Mac OS X 10.6 or higher. Does NOT support sandboxed applications.
 
 
-Usage
+Installation
 -----
 
-Option 1:
+#### Swift Package Manager
+
+Add the following Package Dependency in Xcode:
+
+```
+https://github.com/potionfactory/LetsMove
+```
+
+#### CocoaPods
+
+Add the following line to your Podfile:
+
+```
+pod 'LetsMove', '~> 1.0'
+```
+
+Carthage:
+
+Add the following line to your Cartfile:
+
+```
+github "potionfactory/LetsMove" ~> 1.0
+```
+
+#### Manual Framework Inclusion:
 
 Build then embed LetsMove.framework into your app.
 
-Option 2:
+#### Manual Source Inclusion:
 
 Copy the following files into your project:
 
@@ -31,7 +55,10 @@ If your application is localized, also copy the 'MoveApplication.string' files i
 
 Link your application against Security.framework.
 
-In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
+Usage
+-----
+
+In your app delegate's `-[applicationWillFinishLaunching:]` method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
 
 
 License
@@ -42,6 +69,9 @@ Public domain
 
 Version History
 ---------------
+
+* 1.26
+	- Support for [Swift Package Manager](https://www.swift.org/package-manager/) added
 
 * 1.25
 	- Added Greek and Vietnamese localizations

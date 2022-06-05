@@ -63,9 +63,9 @@
 		F146F8271CE7094400233A9B /* LetsMove.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LetsMove.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F146F82F1CE7097500233A9B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		F146F8311CE7097800233A9B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		F146F8381CE7164D00233A9B /* LetsMove.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = LetsMove.modulemap; sourceTree = "<group>"; };
 		F146F83A1CE71D8A00233A9B /* LetsMove-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LetsMove-Info.plist"; sourceTree = "<group>"; };
 		F146F83B1CE71D9700233A9B /* LetsMove.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LetsMove.h; sourceTree = "<group>"; };
+		F185A567284D93750026A6EA /* LetsMove.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = LetsMove.modulemap; sourceTree = "<group>"; };
 		F7846CE41A9F83E100BFAF88 /* ca */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/MoveApplication.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,6 +128,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				F185A567284D93750026A6EA /* LetsMove.modulemap */,
 				F146F83B1CE71D9700233A9B /* LetsMove.h */,
 				256AC3F00F4B6AF500CF3369 /* LetsMove_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
@@ -140,12 +141,11 @@
 			children = (
 				F146F83A1CE71D8A00233A9B /* LetsMove-Info.plist */,
 				8D1107310486CEB800E47090 /* LetsMove-Test-Info.plist */,
-				F146F8381CE7164D00233A9B /* LetsMove.modulemap */,
 				A17CADE5192F7E14008A209F /* InfoPlist.strings */,
 				A17CADE7192F7E14008A209F /* MainMenu.xib */,
 				A17CADE9192F7E14008A209F /* MoveApplication.strings */,
 			);
-			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
@@ -370,7 +370,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LetsMove_Prefix.pch;
-				INFOPLIST_FILE = "LetsMove-Test-Info.plist";
+				INFOPLIST_FILE = "Resources/LetsMove-Test-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.potionfactory.LetsMove-Test";
 				PRODUCT_NAME = "LetsMove Test";
@@ -387,7 +387,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LetsMove_Prefix.pch;
-				INFOPLIST_FILE = "LetsMove-Test-Info.plist";
+				INFOPLIST_FILE = "Resources/LetsMove-Test-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.potionfactory.LetsMove-Test";
 				PRODUCT_NAME = "LetsMove Test";
@@ -544,7 +544,7 @@
 					"$(inherited)",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				INFOPLIST_FILE = "LetsMove-Info.plist";
+				INFOPLIST_FILE = "Resources/LetsMove-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = LetsMove.modulemap;
@@ -585,7 +585,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				INFOPLIST_FILE = "LetsMove-Info.plist";
+				INFOPLIST_FILE = "Resources/LetsMove-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = LetsMove.modulemap;
