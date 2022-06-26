@@ -7,4 +7,4 @@
 //  The contents of this file are dedicated to the public domain.
 
 #import <Cocoa/Cocoa.h>
-#import <LetsMove/PFMoveApplication.h>
+#import "PFMoveApplication.h"

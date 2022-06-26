@@ -11,27 +11,61 @@ Requirements
 Builds and runs on Mac OS X 10.6 or higher. Does NOT support sandboxed applications.
 
 
-Usage
+Installation
 -----
 
-Option 1:
+#### Swift Package Manager
 
-Build then embed LetsMove.framework into your app.
+In Xcode, add the following Package Dependency:
 
-Option 2:
+```
+https://github.com/potionfactory/LetsMove
+```
+
+To add LetsMove to your own Swift package, add the following line to your to your `Package.swift` file:
+
+```
+.package(url: "https://github.com/potionfactory/LetsMove", .upToNextMajor(from: "1.0.0"))
+```
+
+
+#### CocoaPods
+
+Add the following line to your `Podfile`:
+
+```
+pod 'LetsMove', '~> 1.0'
+```
+
+#### Carthage:
+
+Add the following line to your `Cartfile`:
+
+```
+github "potionfactory/LetsMove" ~> 1.0
+```
+
+#### Add the Framework Manually:
+
+Build then embed `LetsMove.framework` into your app.
+
+#### Add the Source Manually:
 
 Copy the following files into your project:
 
-- PFMoveApplication.h
-- PFMoveApplication.m
+- `PFMoveApplication.h`
+- `PFMoveApplication.m`
 
 If your project has ARC enabled, you'll want to disable ARC on the above files. You can do so by adding -fno-objc-arc compiler flag to your PFMoveApplication.m source file. See http://stackoverflow.com/questions/6646052/how-can-i-disable-arc-for-a-single-file-in-a-project/6658549#6658549
 
 If your application is localized, also copy the 'MoveApplication.string' files into your project.
 
-Link your application against Security.framework.
+Link your application against `Security.framework`.
 
-In your app delegate's "-[applicationWillFinishLaunching:]" method, call the PFMoveToApplicationsFolderIfNecessary function at the very top.
+Usage
+-----
+
+In your app delegate's `-[applicationWillFinishLaunching:]` method, call the `PFMoveToApplicationsFolderIfNecessary` function at the very top.
 
 
 License
@@ -42,6 +76,9 @@ Public domain
 
 Version History
 ---------------
+
+* 1.26
+	- Support for [Swift Package Manager](https://www.swift.org/package-manager/) added
 
 * 1.25
 	- Added Greek and Vietnamese localizations
