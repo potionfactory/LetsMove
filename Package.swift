@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "LetMove",
+    name: "LetsMove",
     defaultLocalization: "en",
     platforms: [
         .macOS(.v10_10),
